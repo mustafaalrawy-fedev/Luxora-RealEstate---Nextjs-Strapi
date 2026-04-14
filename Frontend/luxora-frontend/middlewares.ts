@@ -4,29 +4,31 @@ import { NextResponse } from "next/server";
 export default withAuth(
   function middleware(req) {
     const token = req.nextauth.token;
-    const isAuth = !!token;
     const { pathname } = req.nextUrl;
 
-    // 1. إذا كان المستخدم غير مسجل ويحاول دخول الداشبورد، NextAuth سيتكفل بتحويله للـ Login تلقائياً
+    // A. Allow the complete-profile page to load WITHOUT redirecting to itself
+    if (pathname === "/complete-profile") return NextResponse.next();
 
-    // 2. حماية مسارات الـ Agent
+    // B. If logged in but incomplete, force them to complete
+    if (token && !token.user_type) {
+      return NextResponse.redirect(new URL("/complete-profile", req.url));
+    }
+
+    // C. Handle role-based dashboard protection
     if (pathname.startsWith("/agent") && token?.user_type !== "Agent") {
       return NextResponse.redirect(new URL("/", req.url));
     }
-
-    // 3. حماية مسارات الـ Buyer
     if (pathname.startsWith("/buyer") && token?.user_type !== "Buyer") {
       return NextResponse.redirect(new URL("/", req.url));
     }
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token, // يسمح بالمرور فقط إذا وجد Token
+      authorized: ({ token }) => !!token,
     },
   }
 );
 
-// تحديد المسارات التي سيطبق عليها الـ Middleware
 export const config = {
-  matcher: ["/agent/:path*", "/buyer/:path*"],
+  matcher: ["/agent/:path*", "/buyer/:path*", "/complete-profile"],
 };

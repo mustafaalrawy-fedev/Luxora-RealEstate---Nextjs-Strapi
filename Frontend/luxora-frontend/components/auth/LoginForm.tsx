@@ -40,7 +40,13 @@ const LoginForm = () => {
             const userType = session?.user?.user_type; // buyer or agent
             // this code after i added middleware.ts
             if (userType === "Agent") router.push("/agent");
+<<<<<<< HEAD
             else router.push("/buyer");
+=======
+            else if (userType === "Buyer") router.push("/buyer");
+            else router.push("/complete-profile");
+
+>>>>>>> d06906a (Luxora Auth System - login & register)
 
             router.refresh();
         }

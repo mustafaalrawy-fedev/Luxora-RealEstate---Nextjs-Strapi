@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 declare module "next-auth" {
   interface Session {
     user: {
+      id: string;
       jwt: string;
       user_type: "Buyer" | "Agent";
     } & DefaultSession["user"];
@@ -46,13 +47,13 @@ export const authOptions: NextAuthOptions = {
           const data = await res.json();
 
           if (res.ok && data.user) {
-            // نرجع كائن يتوافق مع تعريف الـ User الذي وضعناه في الخطوة الأولى
+            // return user data that matches the User type definition
             return {
               id: data.user.id.toString(),
               name: data.user.username,
               email: data.user.email,
               jwt: data.jwt,
-              user_type: data.user.user_type,
+              user_type: data.user.user_type, // null if not set yet or for new users
             };
           }
           return null;
@@ -64,26 +65,31 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   // Callbacks
-  callbacks: {
-    // JWT Callback
-    async jwt({ token, user }) {
-      // إذا كان هناك مستخدم (حدث تسجيل دخول للتو)، انقل البيانات للـ token
-      if (user) {
-        token.jwt = user.jwt;
-        token.user_type = user.user_type;
-      }
-      return token;
-    },
-    // Session Callback
-    async session({ session, token }) {
-      // انقل البيانات من الـ token إلى الـ session لتظهر في الـ Frontend
-      if (session.user) {
-        session.user.jwt = token.jwt;
-        session.user.user_type = token.user_type;
-      }
-      return session;
-    },
+callbacks: {
+  async jwt({ token, user, trigger, session }) {
+    // 1. Initial Sign In
+    if (user) {
+      token.id = user.id;
+      token.jwt = user.jwt;
+      token.user_type = user.user_type;
+    }
+
+    // 2. Handle the 'update' call from the frontend
+    if (trigger === "update" && session) {
+      token.user_type = session.user.user_type;
+    }
+
+    return token;
   },
+  async session({ session, token }) {
+    if (token && session.user) {
+      session.user.id = token.id as string;
+      session.user.jwt = token.jwt as string;
+      session.user.user_type = token.user_type as "Buyer" | "Agent";
+    }
+    return session;
+  },
+},
   // Pages: used to redirect to the login page if the user is not authenticated
   pages: {
     signIn: "/login",
