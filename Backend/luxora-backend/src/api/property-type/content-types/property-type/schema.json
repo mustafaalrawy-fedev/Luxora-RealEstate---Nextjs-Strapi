@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "property_types",
+  "info": {
+    "singularName": "property-type",
+    "pluralName": "property-types",
+    "displayName": "Property Types"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "type_name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "targetField": "type_name",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,315 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-oxanium: var(--font-oxanium);
+  --font-dm-sans: var(--font-dm-sans);
+  --font-heading: var(--font-heading);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* --- Custom Utility Colors --- */
+  /* Typography Hierarchy */
+  /* --text-main: var(--foreground);
+  --text-subtitle: var(--muted-foreground); */
+
+  --color-heading: var(--heading)           /* Bold, Deep (h1, h2) */
+  --color-subheading: var(--subheading);        /* Lighter, Subtle (h3, h4, h5) */
+  --color-paragraph: var(--paragraph);         /* Clean, Readable (p, span) */
+
+  /* Status Indicators */
+  --status-available: oklch(0.656 0.241 354.308); /* Greenish */
+  --status-rented: oklch(0.577 0.245 27.325);    /* Reddish */
+  --status-pending: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
+
+  /* Glassmorphism Variants */
+  --glass-bg: oklch(1 0 0 / 0.6);        /* 60% White */
+  --glass-border: oklch(0.922 0 0 / 0.5); /* 50% Border */
+
+  /* Status Indicators */
+  --status-available: oklch(0.656 0.241 354.308); /* Greenish */
+  --status-rented: oklch(0.577 0.245 27.325);    /* Reddish */
+  --status-pending: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
+
+
+  /* --- Status Indicators --- */
+  /* Warning */
+  --color-warning: var(--warning);    /* Yellowish/Orange */
+  --color-warning-foreground: var(--warning-foreground); /* Text on top of warning */
+
+  /* Info */
+  --color-info: var(--info);    /* Blueish */
+  --color-info-foreground: var(--info-foreground); /* Text on top of info */
+
+  /* Success */
+  --color-success: var(--success);    /* Greenish */
+  --color-success-foreground: var(--success-foreground); /* Text on top of success */
+
+  /* Error */
+  --color-error: var(--error);    /* Reddish */
+  --color-error-foreground: var(--error-foreground); /* Text on top of error */
+
+  
+}
+
+:root {
+  /* --- Main Page Colors --- */
+  --background: oklch(1 0 0);               /* Main page background (White) */
+  --foreground: oklch(0.145 0 0);           /* Primary text color (Near Black) */
+
+  /* --- Surface Components (Cards & Menus) --- */
+  --card: oklch(1 0 0);                     /* Background of Property Cards */
+  --card-foreground: oklch(0.145 0 0);      /* Text inside Property Cards */
+  --popover: oklch(1 0 0);                  /* Background of Tooltips and Select Menus */
+  --popover-foreground: oklch(0.145 0 0);   /* Text inside Tooltips and Select Menus */
+
+  /* --- Action Colors (Cyan Tech Theme) --- */
+  --primary: oklch(0.835 0.187 205);        /* Main CTA (Buttons, Icons, Active States) */
+  --primary-foreground: oklch(0.205 0 0);   /* Text/Icons on top of Primary buttons */
+  /* --secondary: oklch(0.95 0.03 205); */       /* Secondary CTA (Cancel buttons, Badge backgrounds) */
+  --secondary: #f52782;
+  --secondary-foreground: oklch(0.205 0 0); /* Text on top of Secondary buttons */
+
+  /* --- Decorative & UI States --- */
+  --muted: oklch(0.97 0 0);                 /* Subtle backgrounds (Input hints, soft dividers) */
+  --muted-foreground: oklch(0.556 0 0);     /* Less important text (Placeholders, Dates) */
+  --accent: oklch(0.97 0 0);                /* Hover states for Menu items and Buttons */
+  --accent-foreground: oklch(0.205 0 0);    /* Text color when hovering an item */
+  --destructive: oklch(0.577 0.245 27.325); /* Error messages and "Delete Listing" buttons */
+
+  /* --- Form & Layout Elements --- */
+  --border: oklch(0.922 0 0);               /* Default border for Cards and Sections */
+  --input: oklch(0.922 0 0);                /* Border for Form Inputs (Search, Login) */
+  --ring: oklch(0.708 0 0);                 /* Focus ring color when clicking inputs */
+  --radius: 0.625rem;                       /* Global corner roundness (10px) */
+
+  /* --- Dashboard Charts (Analytics) --- */
+  --chart-1: oklch(0.823 0.12 346.018);     /* Data line 1 */
+  --chart-2: oklch(0.656 0.241 354.308);     /* Data line 2 */
+  --chart-3: oklch(0.592 0.249 0.584);       /* Data line 3 */
+  --chart-4: oklch(0.525 0.223 3.958);       /* Data line 4 */
+  --chart-5: oklch(0.459 0.187 3.815);       /* Data line 5 */
+
+  /* --- Sidebar (Agent Dashboard) --- */
+  --sidebar: oklch(0.985 0 0);              /* Sidebar column background */
+  --sidebar-foreground: oklch(0.145 0 0);   /* Sidebar link text */
+  --sidebar-primary: oklch(0.205 0 0);      /* Background of active sidebar link */
+  --sidebar-primary-foreground: oklch(0.985 0 0); /* Text on active sidebar link */
+  --sidebar-accent: oklch(0.97 0 0);        /* Sidebar link hover background */
+  --sidebar-accent-foreground: oklch(0.205 0 0); /* Sidebar link hover text */
+  --sidebar-border: oklch(0.922 0 0);       /* Divider line between sidebar and content */
+  --sidebar-ring: oklch(0.708 0 0);         /* Focus ring for sidebar elements */
+
+
+  /* --- Custom Utility Colors --- */
+  /* Typography Hierarchy */
+  /* --text-main: var(--foreground);
+  --text-subtitle: var(--muted-foreground); */
+
+  --heading: oklch(0.145 0 0);           /* Bold, Deep (h1, h2) */
+  --subheading: oklch(0.35 0 0);        /* Lighter, Subtle (h3, h4, h5) */
+  --paragraph: oklch(0.25 0 0);         /* Clean, Readable (p, span) */
+
+  /* Status Indicators */
+  --status-available: oklch(0.656 0.241 354.308); /* Greenish */
+  --status-rented: oklch(0.577 0.245 27.325);    /* Reddish */
+  --status-pending: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
+
+  /* Glassmorphism Variants */
+  --glass-bg: oklch(1 0 0 / 0.6);        /* 60% White */
+  --glass-border: oklch(0.922 0 0 / 0.5); /* 50% Border */
+
+
+  /* --- Status Indicators --- */
+  /* Warning */
+  --warning: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
+  --warning-foreground: oklch(0.205 0.45 346.018); /* Text on top of warning */
+
+  /* Info */
+  --info: oklch(0.656 0.241 205.018);    /* Blueish */
+  --info-foreground: oklch(0.985 0.241 205.018); /* Text on top of info */
+
+  /* Success */
+  --success: oklch(0.656 0.241 146.018);    /* Greenish */
+  --success-foreground: oklch(0.985 0.241 146.018); /* Text on top of success */
+
+  /* Error */
+  --error: oklch(0.577 0.245 27.325);    /* Reddish */
+  --error-foreground: oklch(0.985 0.245 27.325); /* Text on top of error */
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.835 0.187 205);
+  --primary-foreground: oklch(0.1 0 0);
+  /* --secondary: oklch(0.28 0.05 205); */
+  --secondary: #f52782;
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.823 0.12 346.018);
+  --chart-2: oklch(0.656 0.241 354.308);
+  --chart-3: oklch(0.592 0.249 0.584);
+  --chart-4: oklch(0.525 0.223 3.958);
+  --chart-5: oklch(0.459 0.187 3.815);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+
+
+  /* --- Custom Utility Colors --- */
+  /* Typography Hierarchy */
+  /* --text-main: var(--foreground);
+  --text-subtitle: var(--muted-foreground); */
+
+  --heading: oklch(0.985 0 0);          /* Bright White (h1, h2) */
+  --subheading: oklch(0.85 0 0);         /* Soft Grey/White (h3, h4) */
+  --paragraph: oklch(0.75 0 0);          /* Muted Grey (p, span) */
+  
+  /* Status Indicators */
+  --status-available: oklch(0.656 0.241 354.308); /* Greenish */
+  --status-rented: oklch(0.577 0.245 27.325);    /* Reddish */
+  --status-pending: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
+
+  /* Glassmorphism Variants */
+  --glass-bg: oklch(1 0 0 / 0.6);        /* 60% White */
+  --glass-border: oklch(0.922 0 0 / 0.5); /* 50% Border */
+
+
+  /* --- Status Indicators --- */
+  /* Warning */
+  --warning: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
+  --warning-foreground: oklch(0.205 0.45 346.018); /* Text on top of warning */
+
+  /* Info */
+  --info: oklch(0.656 0.241 205.018);    /* Blueish */
+  --info-foreground: oklch(0.985 0.241 205.018); /* Text on top of info */
+
+  /* Success */
+  --success: oklch(0.656 0.241 146.018);    /* Greenish */
+  --success-foreground: oklch(0.985 0.241 146.018); /* Text on top of success */
+
+  /* Error */
+  --error: oklch(0.577 0.245 27.325);    /* Reddish */
+  --error-foreground: oklch(0.985 0.245 27.325); /* Text on top of error */
+
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-dm-sans;
+  }
+  html {
+    @apply font-dm-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold text-heading;
+  }
+   h1 {
+    @apply text-4xl md:text-5xl lg:text-8xl;
+  }
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-6xl;
+  }
+  h3 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+  h4 {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+  h5 {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+  h6 {
+    @apply text-lg md:text-xl lg:text-2xl;
+  }
+  p {
+    @apply text-sm lg:text-base text-paragraph;
+  }
+}
+
+@layer utilities {
+.container-space {
+  @apply px-4 md:px-10 lg:px-20;
+}
+
+/* fixed utils */
+.shadow-glow {
+    box-shadow: 0 0 20px -5px var(--primary);
+  }
+
+  /* Smooth glassmorphism */
+  .glass {
+    @apply bg-background/60 backdrop-blur-xl border border-border;
+  }
+  
+  /* Text gradient using your primary color */
+  .text-gradient {
+    @apply bg-gradient-to-br from-primary to-cyan-300 bg-clip-text text-transparent;
+  }
+
+  .divider {
+    @apply h-px w-full bg-border my-2;
+  }
+  
+}
