@@ -21,6 +21,12 @@ export default withAuth(
     if (pathname.startsWith("/buyer") && token?.user_type !== "Buyer") {
       return NextResponse.redirect(new URL("/", req.url));
     }
+    if (pathname.startsWith("/buyer") || pathname.startsWith("/agent") && !token || token?.user_type === null) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+    if(pathname.startsWith("/complete-profile") && token?.user_type === "Agent" || token?.user_type === "Buyer" || !token || token?.user_type === null){
+      return NextResponse.redirect(new URL("/", req.url));
+    }
   },
   {
     callbacks: {

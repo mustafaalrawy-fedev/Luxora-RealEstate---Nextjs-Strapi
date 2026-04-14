@@ -1,6 +1,6 @@
 const BuyerPage = () => {
   return (
-    <div>BuyerPage</div>
+    <div>BuyerDashboard</div>
   )
 }
 
