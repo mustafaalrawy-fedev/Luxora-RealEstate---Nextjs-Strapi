@@ -35,26 +35,12 @@ const LoginForm = () => {
 
             toast.success("Login successful");
 
-            // get user type from res
-            // const userType = res?.user?.user_type;
-
             // get user type from session
             const session = await getSession();
             const userType = session?.user?.user_type; // buyer or agent
             // this code after i added middleware.ts
             if (userType === "Agent") router.push("/agent");
             else router.push("/buyer");
-
-            // router.push(`/${userType}`);
-
-            // if (userType === "agent") {
-            //     router.push("/agent");
-            // } else if (userType === "buyer") {
-            //     router.push("/buyer");
-            // } else {
-            //     router.push("/"); // في حال لم نجد نوعاً محدداً
-            // }
-
 
             router.refresh();
         }
