@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { Search, Bell, Menu, User, Wrench } from "lucide-react";
+import { Search, Bell, Menu, User, Wrench, Sidebar, SidebarOpen } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -15,29 +15,41 @@ import { signOut } from "next-auth/react";
 import { Input } from "../ui/input";
 import { ModeToggle } from "../shared/theme-toggle";
 import Link from "next/link";
+import { useSidebarStore } from "@/store/useSidbarStore";
+import { Button } from "../ui/button";
 
 const DashboardNavbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
-
+  
   // Logic to create a readable title from the URL (e.g., /buyer/favorites -> Favorites)
   const getPageTitle = () => {
     const segment = pathname.split("/").pop();
     if (!segment || segment === "buyer" || segment === "agent") return "Overview";
     return segment.charAt(0).toUpperCase() + segment.slice(1).split("-").join(" ");
   };
+  
+  const { toggleSidebar, isCollapsed } = useSidebarStore();
 
   return (
     <nav className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-card px-8 py-10">
       {/* 1. Page Title & Search */}
       <div className="flex items-center gap-8">
-        <h1 className="text-xl font-semibold text-foreground hidden md:block">
+
+        {/* Sidebar toggle button */}
+        <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+          {isCollapsed ? <SidebarOpen size={24} /> : <Sidebar size={24} />}
+        </Button>
+
+        {/* Page title */}
+        {/* <h1 className="text-xl font-semibold text-foreground hidden md:block">
           {getPageTitle()}
-        </h1>
+        </h1> */}
         
+        {/* Search bar */}
         <div className="relative hidden lg:block">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-    <Input placeholder="Search properties..." className="w-72 border bg-background pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all"/>
+          <Input placeholder="Search properties..." className="w-72 border bg-background pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all"/>
         </div>
       </div>
 
@@ -76,7 +88,7 @@ const DashboardNavbar = () => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer">
-                <Link href="/profile">
+                <Link href="/settings">
                     Profile Settings
                 </Link>
             </DropdownMenuItem>

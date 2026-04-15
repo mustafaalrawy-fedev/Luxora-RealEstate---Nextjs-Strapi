@@ -7,7 +7,9 @@ return (
       <Sidebar />
       <main className="flex-1 min-h-screen">
         <DashboardNavbar />
-        {children}
+        <div className="p-8">
+            {children}
+        </div>
       </main>
     </section>
   );
