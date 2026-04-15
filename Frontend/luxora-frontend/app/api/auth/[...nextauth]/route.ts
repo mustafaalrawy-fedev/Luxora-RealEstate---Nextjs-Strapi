@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 declare module "next-auth" {
   interface Session {
     user: {
+      avatar: string;
       id: string;
       jwt: string;
       user_type: "Buyer" | "Agent";

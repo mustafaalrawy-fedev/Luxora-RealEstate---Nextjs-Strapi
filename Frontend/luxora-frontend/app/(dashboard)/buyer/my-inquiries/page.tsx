@@ -1,7 +1,7 @@
-const MyInquiriesPage = () => {
+const MyinquiriesPage = () => {
   return (
-    <div>MyInquiriesPage</div>
+    <div>MyinquiriesPage</div>
   )
 }
 
-export default MyInquiriesPage
+export default MyinquiriesPage
