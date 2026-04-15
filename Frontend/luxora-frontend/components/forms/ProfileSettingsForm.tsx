@@ -40,8 +40,6 @@ const ProfileSettingsForm = () => {
     },
   });
 
-  console.log(userData);
-
   // 2. Sync Strapi Data to Form
   useEffect(() => {
     if (userData) {
@@ -69,15 +67,21 @@ const ProfileSettingsForm = () => {
 
   const onSubmit: SubmitHandler<ProfileValues> = async (data) => {
     try {
-      // Note: Strapi users-permissions uses 'social_links' in the DB
-      // We map our camelCase form back to underscore for the API
-      const payload = {
-        ...data,
-        username: data.name, // Strapi uses 'username'
-        social_links: data.socialLinks, 
-      };
 
-      const res = await axiosInstance.put(`/users/${session?.user?.id}`, payload);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/users/${session?.user?.id}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${session?.user?.jwt}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          avatar: data.avatar,
+          username: data.name,
+          phone: data.phone,
+          bio: data.bio,
+          social_links: data.socialLinks,
+        }),
+      });
 
       if (res.status !== 200) throw new Error();
 
