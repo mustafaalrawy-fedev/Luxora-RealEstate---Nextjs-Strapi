@@ -80,7 +80,8 @@
       "unique": false
     },
     "bio": {
-      "type": "blocks"
+      "type": "text",
+      "maxLength": 160
     },
     "social_links": {
       "type": "json"
@@ -90,11 +91,6 @@
       "relation": "oneToMany",
       "target": "api::property.property",
       "mappedBy": "agent"
-    },
-    "favorites": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::property.property"
     },
     "terms": {
       "type": "boolean",

@@ -6,20 +6,12 @@ declare module "next-auth" {
     user: {
       id: string;
       jwt: string;
-      avatar?: string;
-      phone?: string;
-      bio?: string;
-      socialLinks?: object | Record<string, string> | null;
     } & DefaultSession["user"];
   }
 
   interface User {
     id: string;
     jwt: string;
-    avatar?: string;
-    phone?: string;
-    bio?: string;
-    socialLinks?: object | Record<string, string> | null;
   }
 }
 
@@ -27,10 +19,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     jwt: string;
-    avatar?: string;
-    phone?: string;
-    bio?: string;
-    socialLinks?: object | Record<string, string> | null;
   }
 }
 
@@ -64,10 +52,6 @@ export const authOptions: NextAuthOptions = {
               name: data.user.username,
               email: data.user.email,
               jwt: data.jwt,
-              avatar: data.user.avatar || "",
-              phone: data.user.phone || "",
-              bio: data.user.bio || "",
-              socialLinks: data.user.socialLinks || {},
             };
           }
           return null;
@@ -84,10 +68,6 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.jwt = user.jwt;
-        token.avatar = user.avatar;
-        token.phone = user.phone;
-        token.bio = user.bio;
-        token.socialLinks = user.socialLinks;
       }
 
       // 2. Handle the 'update' call from the frontend
@@ -102,10 +82,6 @@ export const authOptions: NextAuthOptions = {
       if (token && session.user) {
         session.user.id = token.id;
         session.user.jwt = token.jwt;
-        session.user.avatar = token.avatar;
-        session.user.phone = token.phone;
-        session.user.bio = token.bio;
-        session.user.socialLinks = token.socialLinks;
       }
       return session;
     },
