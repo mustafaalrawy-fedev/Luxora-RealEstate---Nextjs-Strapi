@@ -6,7 +6,6 @@ declare module "next-auth" {
     user: {
       id: string;
       jwt: string;
-      user_type: "Buyer" | "Agent";
       avatar?: string;
       phone?: string;
       bio?: string;
@@ -17,7 +16,6 @@ declare module "next-auth" {
   interface User {
     id: string;
     jwt: string;
-    user_type: "Buyer" | "Agent";
     avatar?: string;
     phone?: string;
     bio?: string;
@@ -29,7 +27,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     jwt: string;
-    user_type: "Buyer" | "Agent";
     avatar?: string;
     phone?: string;
     bio?: string;
@@ -49,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.identifier || !credentials?.password) return null;
 
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local?populate=*`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/auth/local?populate=*`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -67,7 +64,6 @@ export const authOptions: NextAuthOptions = {
               name: data.user.username,
               email: data.user.email,
               jwt: data.jwt,
-              user_type: data.user.user_type,
               avatar: data.user.avatar || "",
               phone: data.user.phone || "",
               bio: data.user.bio || "",
@@ -88,7 +84,6 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.jwt = user.jwt;
-        token.user_type = user.user_type;
         token.avatar = user.avatar;
         token.phone = user.phone;
         token.bio = user.bio;
@@ -107,7 +102,6 @@ export const authOptions: NextAuthOptions = {
       if (token && session.user) {
         session.user.id = token.id;
         session.user.jwt = token.jwt;
-        session.user.user_type = token.user_type;
         session.user.avatar = token.avatar;
         session.user.phone = token.phone;
         session.user.bio = token.bio;

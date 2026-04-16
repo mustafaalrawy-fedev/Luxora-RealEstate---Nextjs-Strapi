@@ -11,8 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { User, Mail, Phone, Camera } from "lucide-react";
 import { profileSchema, ProfileValues } from "@/lib/validations/profile-settings";
 import Image from "next/image";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import axiosInstance from "@/lib/axios";
+import { useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/use-profile";
 
 const ProfileSettingsForm = () => {
@@ -162,17 +161,32 @@ const ProfileSettingsForm = () => {
             <User className="absolute left-3 top-3 text-muted-foreground" size={16} />
             <Input {...register("name")} id="name" className="pl-10" />
           </div>
-          {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+          {errors.name && <p className="text-xs text-error">{errors.name.message}</p>}
         </div>
 
         {/* Phone */}
         <div className="grid gap-2">
-          <label htmlFor="phone">Phone Number</label>
+          <label htmlFor="phone" className="text-sm font-medium">Phone Number</label>
           <div className="relative">
             <Phone className="absolute left-3 top-3 text-muted-foreground" size={16} />
-            <Input {...register("phone")} id="phone" className="pl-10" />
-          </div>
+            <Input 
+              {...register("phone")} 
+              id="phone" 
+              placeholder="+20 123 456 789"
+              className={`pl-10 ${errors.phone ? 'border-error' : ''}`} 
+            />
+          {/* رسالة الخطأ تظهر فقط عند وجود مشكلة في الإدخال */}
+          {errors.phone && (
+            <p className="text-xs text-error mt-1 font-medium">
+              {errors.phone.message}
+            </p>
+          )}
+          {/* رسالة المساعدة (Helper Text) بلون هادئ */}
+          <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed">
+            <span className="font-semibold text-primary">Note:</span> This number will be used for property inquiries. We highly recommend using a <span className="text-success font-medium">WhatsApp</span> enabled number.
+          </p>
         </div>
+      </div>
 
         {/* Social Links */}
         <div className="grid gap-2">

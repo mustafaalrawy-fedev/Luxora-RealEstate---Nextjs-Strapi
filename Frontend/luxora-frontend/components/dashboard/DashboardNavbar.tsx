@@ -1,8 +1,8 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
-import { Search, Bell, Menu, User, Wrench, Sidebar, SidebarOpen } from "lucide-react";
+// import { usePathname } from "next/navigation";
+import { Search, Bell, User, Sidebar, SidebarOpen } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -20,14 +20,14 @@ import { Button } from "../ui/button";
 
 const DashboardNavbar = () => {
   const { data: session } = useSession();
-  const pathname = usePathname();
+  // const pathname = usePathname();
   
   // Logic to create a readable title from the URL (e.g., /buyer/favorites -> Favorites)
-  const getPageTitle = () => {
-    const segment = pathname.split("/").pop();
-    if (!segment || segment === "buyer" || segment === "agent") return "Overview";
-    return segment.charAt(0).toUpperCase() + segment.slice(1).split("-").join(" ");
-  };
+  // const getPageTitle = () => {
+  //   const segment = pathname.split("/").pop();
+  //   if (!segment || segment === "buyer" || segment === "agent") return "Overview";
+  //   return segment.charAt(0).toUpperCase() + segment.slice(1).split("-").join(" ");
+  // };
   
   const { toggleSidebar, isCollapsed } = useSidebarStore();
 
@@ -61,7 +61,7 @@ const DashboardNavbar = () => {
         {/* Notifications */}
         <button className="relative p-2 text-muted-foreground hover:text-primary transition-colors">
           <Bell size={20} />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 border-2 border-white"></span>
+          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-error border-2 border-foreground"></span>
         </button>
 
         <div className="h-8 w-0.5 bg-border mx-2"></div>
@@ -72,10 +72,10 @@ const DashboardNavbar = () => {
             <div className="flex items-center gap-3 group">
               <div className="md:flex flex-col items-end hidden sm:flex">
                 <p className="text-sm font-medium group-hover:text-primary transition-colors">
-                  {session?.user?.name || "User"}
+                  {session?.user?.name?.split(" ").map((name) => name.charAt(0).toUpperCase() + name.slice(1)).join(" ") || "User"}
                 </p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
-                  {session?.user?.user_type}
+                  Agent
                 </p>
               </div>
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center border group-hover:border-primary transition-all">

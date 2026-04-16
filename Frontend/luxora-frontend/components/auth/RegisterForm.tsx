@@ -38,14 +38,16 @@ const RegisterForm = () => {
                 redirect: false,
                 identifier: data.email,
                 password: data.password,
-                callbackUrl: "/complete-profile"
+                // callbackUrl: "/complete-profile"
+                callbackUrl: "/agent"
             });
 
             if(!resLogin?.ok){
                 toast.error(resLogin?.error);
             } else {
                 toast.success("Account created! Now complete your profile.");
-                router.push("/complete-profile");
+                // router.push("/complete-profile");
+                router.push("/agent");
                 router.refresh();
             }
 

@@ -74,14 +74,6 @@
         "images"
       ]
     },
-    "user_type": {
-      "type": "enumeration",
-      "required": true,
-      "enum": [
-        "Buyer",
-        "Agent"
-      ]
-    },
     "phone": {
       "type": "string",
       "required": false,
@@ -99,7 +91,7 @@
       "target": "api::property.property",
       "mappedBy": "agent"
     },
-    "favourites": {
+    "favorites": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::property.property"

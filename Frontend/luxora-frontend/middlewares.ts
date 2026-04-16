@@ -1,3 +1,4 @@
+// middleware.ts
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
@@ -6,27 +7,12 @@ export default withAuth(
     const token = req.nextauth.token;
     const { pathname } = req.nextUrl;
 
-    // A. Allow the complete-profile page to load WITHOUT redirecting to itself
-    if (pathname === "/complete-profile") return NextResponse.next();
-
-    // B. If logged in but incomplete, force them to complete
-    if (token && !token.user_type) {
-      return NextResponse.redirect(new URL("/complete-profile", req.url));
-    }
-
-    // C. Handle role-based dashboard protection
-    if (pathname.startsWith("/agent") && token?.user_type !== "Agent") {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-    if (pathname.startsWith("/buyer") && token?.user_type !== "Buyer") {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-    if (pathname.startsWith("/buyer") || pathname.startsWith("/agent") && !token || token?.user_type === null) {
+    // 3. حماية مسار الـ /agent (يمنع غير المسجلين)
+    if (pathname.startsWith("/agent") && !token) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
-    if(pathname.startsWith("/complete-profile") && token?.user_type === "Agent" || token?.user_type === "Buyer" || !token || token?.user_type === null){
-      return NextResponse.redirect(new URL("/", req.url));
-    }
+
+    return NextResponse.next();
   },
   {
     callbacks: {
@@ -36,5 +22,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/agent/:path*", "/buyer/:path*", "/complete-profile"],
+  matcher: ["/agent/:path*"],
 };

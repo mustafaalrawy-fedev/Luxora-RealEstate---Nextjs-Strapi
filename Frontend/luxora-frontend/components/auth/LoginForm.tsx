@@ -8,7 +8,9 @@ import { User } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, type LoginInput } from "@/lib/validations/auth"
-import { signIn, getSession } from "next-auth/react"
+import { signIn,
+    //  getSession 
+    } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
@@ -34,14 +36,7 @@ const LoginForm = () => {
         } else {
 
             toast.success("Login successful");
-
-            // get user type from session
-            const session = await getSession();
-            const userType = session?.user?.user_type; // buyer or agent
-            // this code after i added middleware.ts
-            if (userType === "Agent") router.push("/agent");
-            else if (userType === "Buyer") router.push("/buyer");
-            else router.push("/complete-profile");
+            router.push("/agent");
 
             router.refresh();
         }

@@ -1605,10 +1605,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    favourites: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::property.property'
-    >;
+    favorites: Schema.Attribute.Relation<'oneToMany', 'api::property.property'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1639,8 +1636,6 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user_type: Schema.Attribute.Enumeration<['Buyer', 'Agent']> &
-      Schema.Attribute.Required;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &
