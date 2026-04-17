@@ -58,6 +58,17 @@ interface PropertyDetails {
             }
         }
     }
+    agent: {
+        id: number;
+        username: string;
+        phone: string;
+        avatar: {
+            url: string;
+            caption: string;
+            alternativeText: string;
+            id: number;
+        }
+    }
 }
 
 interface PropertyDetailsResponse {

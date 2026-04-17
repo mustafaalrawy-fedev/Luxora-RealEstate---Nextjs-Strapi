@@ -9,67 +9,63 @@ import { useSession, signOut } from "next-auth/react";
 import { AuthBtnLoading } from "./LoadingState";
 
 const Header = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
-  // check session status
   const isAuthenticated = status === "authenticated";
   const isLoading = status === "loading";
 
-  // get user type from session
-  const userType = session?.user?.user_type;
-  const dashboardLink = 
-    userType?.toLowerCase() === "agent" ? "/agent" : 
-    userType?.toLowerCase() === "buyer" ? "/buyer" : "/register";
+  // الآن الرابط دائماً يوجه إلى لوحة تحكم الوكيل
+  const dashboardLink = "/agent";
 
   return (
     <nav className="flex justify-center items-center container-space h-20 fixed top-0 left-0 right-0 bg-background/20 backdrop-blur-sm z-50 border-b border-white/10">
       <div className="flex justify-between items-center w-full">
         <Logo />
         
-        <div className="flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-10">
           <NavigationLinks className="gap-8" />
           <ModeToggle />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {isLoading ? (
-            // when loading status with skeleton
             <AuthBtnLoading />
           ) : isAuthenticated ? (
-            // when user is authenticated
-            <>
+            <div className="flex items-center gap-3">
               <Button 
                 variant="outline" 
-                className="bg-transparent border border-white/20 text-white" 
+                className="hidden sm:flex bg-transparent border border-white/20 text-white hover:bg-white/10" 
                 onClick={() => router.push(dashboardLink)}
               >
                 Dashboard
               </Button>
+
               <Button 
                 variant="destructive" 
+                size="sm"
                 onClick={() => signOut({ callbackUrl: "/" })}
               >
                 Logout
               </Button>
-            </>
+            </div>
           ) : (
-            // when user is not authenticated | guest
-            <>
+            <div className="flex items-center gap-2">
               <Button 
-                variant="outline" 
-                className="bg-transparent border border-white/20 text-white" 
+                variant="ghost" 
+                className="text-white hover:bg-white/10" 
                 onClick={() => router.push('/login')}
               >
                 Login
               </Button>
               <Button 
                 variant="default" 
+                className="bg-primary hover:bg-primary/90 text-white"
                 onClick={() => router.push('/register')}
               >
                 Sign Up
               </Button>
-            </>
+            </div>
           )}
         </div>
       </div>
