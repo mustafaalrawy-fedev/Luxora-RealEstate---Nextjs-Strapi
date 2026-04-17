@@ -1,4 +1,4 @@
-import ProfileSettingsForm from "@/components/forms/ProfileSettingsForm";
+import ProfileSettingsForm from "@/components/dashboard/forms/ProfileSettingsForm";
 
 export default function SettingsPage() {
   return (

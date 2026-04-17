@@ -1,8 +1,8 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 // import { usePathname } from "next/navigation";
-import { Search, Bell, User, Sidebar, SidebarOpen } from "lucide-react";
+import { Search, Bell, Sidebar, SidebarOpen, Settings } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -12,14 +12,14 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"; // Standard shadcn dropdown
 import { signOut } from "next-auth/react";
-import { Input } from "../ui/input";
-import { ModeToggle } from "../shared/theme-toggle";
+import { Input } from "../../ui/input";
+import { ModeToggle } from "../../shared/theme-toggle";
 import Link from "next/link";
 import { useSidebarStore } from "@/store/useSidbarStore";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 const DashboardNavbar = () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   // const pathname = usePathname();
   
   // Logic to create a readable title from the URL (e.g., /buyer/favorites -> Favorites)
@@ -70,17 +70,18 @@ const DashboardNavbar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <div className="flex items-center gap-3 group">
-              <div className="md:flex flex-col items-end hidden sm:flex">
-                <p className="text-sm font-medium group-hover:text-primary transition-colors">
+             {/* <div className="md:flex flex-col items-end hidden sm:flex">
+                 <p className="text-sm font-medium group-hover:text-primary transition-colors">
                   {session?.user?.name?.split(" ").map((name) => name.charAt(0).toUpperCase() + name.slice(1)).join(" ") || "User"}
                 </p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
                   Agent
-                </p>
-              </div>
+                </p> 
+              </div> 
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center border group-hover:border-primary transition-all">
                 <User size={20} className="text-primary" />
-              </div>
+                </div> */}
+                <Settings size={24} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
             </div>
           </DropdownMenuTrigger>
           

@@ -2,9 +2,9 @@ import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-const MainHeading = ({title="", description="", buttonText="", buttonLink="", buttonVariant="default", showButton=false}: {title: string, description: string, buttonText?: string, buttonLink?: string, buttonVariant?: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link", showButton?: boolean}) => {
+const MainHeading = ({title="", description="", buttonText="", buttonLink="", buttonVariant="default", showButton=false, className=""}: {title: string, description: string, buttonText?: string, buttonLink?: string, buttonVariant?: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link", showButton?: boolean, className?: string}) => {
   return (
-    <header className="flex justify-between items-center mb-20">
+    <header className={`flex justify-between items-center mb-20 ${className}`}>
         <div>
           <h2 className="text-3xl font-bold">{title}</h2>
           <p className="text-muted-foreground">{description}</p>

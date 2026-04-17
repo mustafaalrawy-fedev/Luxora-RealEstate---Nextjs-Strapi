@@ -5,9 +5,10 @@ interface FilterSelectProps {
     options: {id: number, value: string, label: string, operator?: string}[];
     value: string;
     onValueChange: (value: string) => void;
+    size?: "sm" | "default" | "lg";
 }
 
-const FilterSelect = ({label, options, value, onValueChange}: FilterSelectProps) => {
+const FilterSelect = ({label, options, value, onValueChange, size='lg'}: FilterSelectProps) => {
   return (
     <div className='w-full'>
           {/* <label htmlFor="status" className='block text-xs font-medium text-muted-foreground mb-2'>Status</label> */}
@@ -15,7 +16,7 @@ const FilterSelect = ({label, options, value, onValueChange}: FilterSelectProps)
           value={value || ""}
           onValueChange={onValueChange}
         >
-          <SelectTrigger className='w-full' size="lg">
+          <SelectTrigger className='w-full' size={size}>
             <SelectValue placeholder={label} />
           </SelectTrigger>
           <SelectContent>

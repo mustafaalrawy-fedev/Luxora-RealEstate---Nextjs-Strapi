@@ -10,6 +10,7 @@ interface PropertyDetails {
     slug: string;
     short_description: string;
     long_description: string;
+    publishedAt?: string | null;
     featured_image: {
         url: string;
         name: string;

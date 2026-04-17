@@ -4,141 +4,26 @@ import Image from 'next/image'
 import PropertyCard from './PropertyCard'
 import MainHeading from '../shared/MainHeading'
 import PropertyDetailsResponse from '@/types/property'
-import { useQuery } from '@tanstack/react-query'
-import axiosInstance from '@/lib/axios'
-import qs from 'qs'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
+// import {
+//   Pagination,
+//   PaginationContent,
+//   PaginationItem,
+//   PaginationLink,
+//   PaginationNext,
+//   PaginationPrevious,
+// } from "@/components/ui/pagination"
+import PropertyPagination from './PropertyPagination'
 import { PropertiesSkeleton } from '../shared/LoadingState'
 import ErrorState from '../shared/ErrorState'
 import PropertyFilter from './PropertyFilter'
-import { useSearchParams } from 'next/navigation'
 import { AnimatePresence, motion } from 'motion/react'
-import { useState } from 'react'
-import { PRICE_OPTIONS, BEDROOMS_OPTIONS, BATHROOMS_OPTIONS } from '@/constants'
+import { useProperties } from '@/hooks/use-properties'
+import { useSearchParams } from 'next/navigation'
 
 const PropertiesContent = () => {
-
   const searchParams = useSearchParams()
 
-  const status = searchParams.get('status') as 'Sale' | 'Rent' | null
-  const type = searchParams.get('type')
-  const country = searchParams.get('country')
-  const city = searchParams.get('city')
-
-  /*
-    ================
-    = Bedroom Filter =
-    ================
-  */
-  const bedroom = searchParams.get('bedrooms')
-  const selectedBedroomOption = [...BEDROOMS_OPTIONS]
-    .find(opt => opt.value === bedroom);
-  const bedroomOperator = selectedBedroomOption?.operator || '$gte';
-  const finalBedroom = (bedroomOperator === '$between' && bedroom) 
-    ? bedroom.split(',').map(Number) || bedroom.split('-').map(Number)
-    : bedroom;
-
-  /*
-    ================
-    = Bathroom Filter =
-    ================
-  */
-  const bathroom = searchParams.get('bathrooms')
-  const selectedBathroomOption = [...BATHROOMS_OPTIONS]
-    .find(opt => opt.value === bathroom);
-  const bathroomOperator = selectedBathroomOption?.operator || '$gte';
-  const finalBathroom = (bathroomOperator === '$between' && bathroom) 
-    ? bathroom.split(',').map(Number) || bathroom.split('-').map(Number)
-    : bathroom;
-
-  /*
-    ================
-    = Price Filter =
-    ================
-  */
-  const price = searchParams.get('price')
-  const selectedOption = [...PRICE_OPTIONS.SALE, ...PRICE_OPTIONS.RENT]
-    .find(opt => opt.value === price);
-  const operator = selectedOption?.operator || '$lte';
-  // If it's between, Strapi needs an array [min, max]
-  const finalPrice = (operator === '$between' && price) 
-    ? price.split(',').map(Number) || price.split('-').map(Number)
-    : price;
-
-  /*
-    ================
-    = Pagination =
-    ================
-  */
-  const [currentPage, setCurrentPage] = useState(1)
-  const page = searchParams.get('page') || currentPage
-  const pageSize = 9
-
-  /*
-    ================
-    = Query = 
-    ================
-  */
-  const query = qs.stringify({
-    populate: {
-      featured_image: { populate: "*" },
-      district: { populate: { city: { populate: {country: true} } } },
-      property_type: { populate: "*" },
-    },
-    pagination: {
-      page: currentPage,
-      pageSize: pageSize,
-    },
-    filters: {
-      property_status: status ? {$eq: status} : undefined,
-      property_type: type ? { slug: { $eq: type } } : undefined,
-      // bedroom: bedroom ? {$gte: bedroom} : undefined,
-      bedroom: bedroom ? { [bedroomOperator]: finalBedroom } : undefined,
-      // bathroom: bathroom ? {$gte: bathroom} : undefined,
-      bathroom: bathroom ? { [bathroomOperator]: finalBathroom } : undefined,
-      // price: price ? {$lte: price} : undefined,
-      price: price ? { [operator]: finalPrice } : undefined,
-      district: {
-  city: {
-    // Level 1: Filter by City Slug
-    slug: city ? { $eq: city } : undefined,
-    
-    // Level 2: Filter by Country Slug (NESTED inside city)
-    country: {
-      slug: country ? { $eq: country } : undefined
-    }
-  }
-},
-    },
-    sort: 'createdAt:desc',
-  }, {encodeValuesOnly: true})
-
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['all-properties', page, status, type, bedroom, bathroom, price, country, city],
-        queryFn: async() => {
-            const res = await axiosInstance.get(`/properties?${query}`) // All properties
-            return res.data
-        },
-        staleTime: 5 * 60 * 1000,
-        gcTime: 10 * 60 * 1000,
-    })
-
-    const properties = data?.data
-    const meta = data?.meta?.pagination
-    const totalPages = meta?.pageCount || 1
-
-    const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage)
-    // Smooth scroll to the top of the properties grid
-    window.scrollTo({ top: 400, behavior: 'smooth' })
-  }
+ const {properties, isLoading, error, totalPages, currentPage, handlePageChange, pageSize} = useProperties({filter: true})
 
   return (
     <>
@@ -183,50 +68,7 @@ const PropertiesContent = () => {
       {properties?.length === 0 && <ErrorState variant="Search"/>}
 
       {/* --- Shadcn Pagination --- */}
-        <div className="mt-20">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  href="#" 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    if (currentPage > 1) handlePageChange(currentPage - 1)
-                  }}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                />
-              </PaginationItem>
-
-              {/* Generate Page Numbers */}
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <PaginationItem key={pageNum}>
-                  <PaginationLink
-                    href="#"
-                    isActive={page === pageNum}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handlePageChange(pageNum)
-                    }}
-                    className="cursor-pointer"
-                  >
-                    {pageNum}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationNext 
-                  href="#" 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    if (currentPage < totalPages) handlePageChange(currentPage + 1)
-                  }}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+      <PropertyPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
       </section>
       </>
   )
