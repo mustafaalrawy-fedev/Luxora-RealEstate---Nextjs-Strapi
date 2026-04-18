@@ -25,16 +25,16 @@ import { SearchableMultiSelect } from "@/components/shared/multi-select-search";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface StrapiItem {
-  id: string;
+  id: number;
+  documentId: string;
   type_name?: string;
   amenity_name?: string;
-  // city_name?: string;
-  // country_name?: string;
-  district_name?: string
+  district_name?: string;
 }
 
 interface UploadedFile {
-  id: number;
+  id: number;        // ✅ Numeric ID for media relations
+  documentId: string; // Used for content-type relations only
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -43,15 +43,15 @@ const AddPropertyPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  // ── Image states (managed outside RHF intentionally) ───────────────────────
-  const [previewImage, setPreviewImage]       = useState<string | null>(null);
-  const [imageFile, setImageFile]             = useState<File | null>(null);
-  const [imageError, setImageError]           = useState<string>("");
+  // ── Image states ────────────────────────────────────────────────────────────
+  const [previewImage, setPreviewImage]   = useState<string | null>(null);
+  const [imageFile, setImageFile]         = useState<File | null>(null);
+  const [imageError, setImageError]       = useState<string>("");
   const [mediaFiles, setMediaFiles]       = useState<File[]>([]);
   const [mediaPreviews, setMediaPreviews] = useState<string[]>([]);
   const [mediaError, setMediaError]       = useState<string>("");
 
-  // ── Form setup ─────────────────────────────────────────────────────────────
+  // ── Form setup ──────────────────────────────────────────────────────────────
   const {
     register,
     handleSubmit,
@@ -70,9 +70,7 @@ const AddPropertyPage = () => {
     },
   });
 
-  // ── Auto-set agent ID from session ─────────────────────────────────────────
-  // This is the KEY fix — agent was required in schema but never populated,
-  // causing silent Zod validation failure that blocked onSubmit from running.
+  // ── Auto-set agent ID from session ──────────────────────────────────────────
   useEffect(() => {
     if (session?.user?.id) {
       setValue("agent", String(session.user.id), { shouldValidate: true });
@@ -102,7 +100,7 @@ const AddPropertyPage = () => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
-  // ── Gallery ────────────────────────────────────────────────────────────────
+  // ── Gallery ─────────────────────────────────────────────────────────────────
   const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
@@ -128,122 +126,124 @@ const AddPropertyPage = () => {
   });
 
   const { data: districts } = useQuery({
-  queryKey: ["districts"],
-  queryFn: async () => {
-    // Fetches District -> City -> Country
-    const res = await axiosInstance.get("/districts?populate[city][populate]=country");
-    return res.data.data;
-  },
-});
-
+    queryKey: ["districts"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/districts?populate[city][populate]=country");
+      return res.data.data;
+    },
+  });
 
   // ── Submit ──────────────────────────────────────────────────────────────────
-const onSubmit = async (data: PropertyValues) => {
-  let valid = true;
-  if (!imageFile) { setImageError("Featured image is required"); valid = false; }
-  if (mediaFiles.length < 4) { setMediaError("Please upload at least 4 gallery images"); valid = false; }
-  if (!valid) return;
+  const onSubmit = async (data: PropertyValues) => {
+    let valid = true;
+    if (!imageFile) { setImageError("Featured image is required"); valid = false; }
+    if (mediaFiles.length < 4) { setMediaError("Please upload at least 4 gallery images"); valid = false; }
+    if (!valid) return;
 
-  // Use the base URL without /api for upload (Strapi upload endpoint is at root)
-  const STRAPI_BASE = (process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://localhost:1337/api")
-    .replace(/\/api\/?$/, ""); // strips trailing /api → "http://localhost:1337"
+    const STRAPI_BASE = (process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://localhost:1337/api")
+      .replace(/\/api\/?$/, ""); 
 
-  const STRAPI_API = `${STRAPI_BASE}/api`;
+    const STRAPI_API = `${STRAPI_BASE}/api`;
 
-  setLoading(true);
-  try {
-    // ── 1. Upload featured image via fetch (bypasses axiosInstance headers) ──
-    const featuredFormData = new FormData();
-    featuredFormData.append("files", imageFile!);
+    setLoading(true);
+    try {
+      // ── 1. Upload featured image ──
+      const featuredFormData = new FormData();
+      featuredFormData.append("files", imageFile!);
 
-    const featuredUploadRes = await fetch(`${STRAPI_BASE}/api/upload`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${session?.user?.jwt}` },
-      // ✅ No Content-Type — browser sets multipart/form-data + boundary
-      body: featuredFormData,
-    });
+      const featuredUploadRes = await fetch(`${STRAPI_BASE}/api/upload`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session?.user?.jwt}` },
+        body: featuredFormData,
+      });
 
-    if (!featuredUploadRes.ok) {
-      const err = await featuredUploadRes.json();
-      console.error("Featured upload error:", err);
-      throw new Error(err?.error?.message ?? `Featured image upload failed (${featuredUploadRes.status})`);
-    }
+      if (!featuredUploadRes.ok) throw new Error("Featured image upload failed");
+      const featuredUploaded = await featuredUploadRes.json();
+      
+      // ✅ FIX: Use numeric id for media relations, NOT documentId
+      const featuredId: number = featuredUploaded[0]?.id; 
 
-    const featuredUploaded = await featuredUploadRes.json();
-    const featuredId: number = featuredUploaded[0]?.id;
-    console.log("✅ Featured uploaded, id:", featuredId); // temp
+      // ── 2. Upload gallery ──
+      const mediaFormData = new FormData();
+      mediaFiles.forEach((file) => mediaFormData.append("files", file));
 
-    // ── 2. Upload gallery via fetch ────────────────────────────────────────
-    const mediaFormData = new FormData();
-    mediaFiles.forEach((file) => mediaFormData.append("files", file));
+      const mediaUploadRes = await fetch(`${STRAPI_BASE}/api/upload`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session?.user?.jwt}` },
+        body: mediaFormData,
+      });
 
-    const mediaUploadRes = await fetch(`${STRAPI_BASE}/api/upload`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${session?.user?.jwt}` },
-      body: mediaFormData,
-    });
+      if (!mediaUploadRes.ok) throw new Error("Media upload failed");
+      const mediaUploaded = await mediaUploadRes.json();
+      
+      // ✅ FIX: Use numeric ids for media relations
+      const mediaIds: number[] = mediaUploaded.map((f: UploadedFile) => f.id);
 
-    if (!mediaUploadRes.ok) {
-      const err = await mediaUploadRes.json();
-      console.error("Media upload error:", err);
-      throw new Error(err?.error?.message ?? `Media upload failed (${mediaUploadRes.status})`);
-    }
-
-    const mediaUploaded = await mediaUploadRes.json();
-    const mediaIds: number[] = mediaUploaded.map((f: UploadedFile) => f.id);
-    console.log("✅ Media uploaded, ids:", mediaIds);
-
-    // ── 3. Create property ─────────────────────────────────────────────────
-    const propertyRes = await fetch(`${STRAPI_API}/properties`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${session?.user?.jwt}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        data: {
-          property_name:       data.property_name,
-          slug:                data.slug,
-          short_description:   data.short_description,
-          long_description:    data.long_description,
-          price:               Number(data.price),
-          area_size_sqft:      Number(data.area_size_sqft),
-          bedroom:             Number(data.bedroom),
-          bathroom:            Number(data.bathroom),
-          property_status:     data.property_status,
-          construction_status: data.construction_status,
-          build_year:          data.build_year,
-          developer:           data.developer,
-          district:            Number(data.district),
-          property_type:       Number(data.property_type),
-          amenities:           (data.amenities ?? []).map(Number),
-          agent:               Number(data.agent),
-          featured_image:      featuredId,
-          media:               mediaIds,
+      // ── 3. Create property ──
+      const propertyRes = await fetch(`${STRAPI_API}/properties`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session?.user?.jwt}`,
+          "Content-Type": "application/json",
         },
-      }),
-    });
+        body: JSON.stringify({
+          data: {
+            property_name:       data.property_name,
+            slug:                data.slug,
+            short_description:   data.short_description,
+            long_description:    data.long_description,
+            price:               Number(data.price),
+            area_size_sqft:      Number(data.area_size_sqft),
+            bedroom:             Number(data.bedroom),
+            bathroom:            Number(data.bathroom),
+            property_status:     data.property_status,
+            construction_status: data.construction_status ?? null,
+            build_year:          data.build_year ? `${data.build_year}-01-01` : null,
+            developer:           data.developer,
+            
+            // ✅ Content-type relations use documentId + connect
+            district: {
+              connect: [data.district], 
+            },
+            property_type: {
+              connect: [data.property_type],
+            },
+            amenities: {
+              connect: data.amenities, 
+            },
+            agent: {
+              connect: [data.agent],
+            },  
+            
+            // ✅ Media relations use numeric id directly (NOT documentId, NOT connect)
+            featured_image: featuredId,
+            media:          mediaIds,
 
-    const propertyJson = await propertyRes.json();
-    console.log("Property response:", propertyJson); // shows exact Strapi error if 400
+            publishedAt: null,
+          },
+        }),
+      });
 
-    if (!propertyRes.ok) {
-      throw new Error(propertyJson?.error?.message ?? `Property creation failed (${propertyRes.status})`);
+      const propertyJson = await propertyRes.json();
+
+      if (!propertyRes.ok) {
+        console.error("Strapi error:", propertyJson);
+        throw new Error(propertyJson?.error?.message ?? `Property creation failed (${propertyRes.status})`);
+      }
+
+      toast.success("Property published successfully!");
+      router.push("/agent/properties");
+      router.refresh();
+
+    } catch (error) {
+      console.error("Submit error:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to publish property");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    toast.success("Property published successfully!");
-    router.push("/agent/properties");
-    router.refresh();
-
-  } catch (error) {
-    console.error("Submit error:", error);
-    toast.error(error instanceof Error ? error.message : "Failed to publish property");
-  } finally {
-    setLoading(false);
-  }
-};
-
-  // ── Render ─────────────────────────────────────────────────────────────────
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <section className="max-w-5xl mx-auto py-10 px-4">
 
@@ -260,14 +260,7 @@ const onSubmit = async (data: PropertyValues) => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10 animate-in fade-in duration-700">
 
-        {/*
-          Hidden inputs are REQUIRED for Select-driven fields.
-          Without register(), RHF won't include them in handleSubmit(data) — 
-          and Zod will fail validation silently, blocking submit entirely.
-        */}
         <input type="hidden" {...register("property_type")} />
-        {/* <input type="hidden" {...register("country")} /> */}
-        {/* <input type="hidden" {...register("city")} /> */}
         <input type="hidden" {...register("agent")} />
 
         {/* ── Featured Image ─────────────────────────────────────────────── */}
@@ -309,7 +302,7 @@ const onSubmit = async (data: PropertyValues) => {
           </label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {mediaPreviews.map((url, index) => (
-              <div key={url} className="relative h-32 rounded-xl overflow-hidden border">
+              <div key={`${url}-${index}`} className="relative h-32 rounded-xl overflow-hidden border">
                 <Image src={url} alt={`Gallery ${index + 1}`} fill unoptimized className="object-cover" />
                 <button
                   type="button" onClick={() => removeGalleryImage(index)}
@@ -347,8 +340,8 @@ const onSubmit = async (data: PropertyValues) => {
           <div className="space-y-2">
             <label className="text-sm font-semibold">Listing Status</label>
             <Select
-              onValueChange={(v) => setValue("property_status", v as "Sale" | "Rent")}
-              defaultValue="Sale"
+              value={watch("property_status")}
+              onValueChange={(v) => setValue("property_status", v as "Sale" | "Rent", { shouldValidate: true })}
             >
               <SelectTrigger className="h-12 w-full" size="lg"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -390,11 +383,14 @@ const onSubmit = async (data: PropertyValues) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-semibold">Property Type</label>
-            <Select onValueChange={(v) => setValue("property_type", v, { shouldValidate: true })}>
+            <Select
+              value={watch("property_type")}
+              onValueChange={(v) => setValue("property_type", v, { shouldValidate: true })}
+            >
               <SelectTrigger className="h-12 w-full" size="lg"><SelectValue placeholder="Select type" /></SelectTrigger>
               <SelectContent>
                 {propertyTypes?.map((t: StrapiItem) => (
-                  <SelectItem key={t.id} value={t.id.toString()}>{t.type_name}</SelectItem>
+                  <SelectItem key={t.documentId} value={t.documentId}>{t.type_name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -419,6 +415,7 @@ const onSubmit = async (data: PropertyValues) => {
           <div className="space-y-2">
             <label className="text-sm font-semibold">Construction Status</label>
             <Select
+              value={watch("construction_status") ?? ""}
               onValueChange={(v) =>
                 setValue("construction_status", v as "Finished" | "Under Construction", { shouldValidate: true })
               }
@@ -455,27 +452,28 @@ const onSubmit = async (data: PropertyValues) => {
         </div>
 
         {/* ── Location ─────────────────────────────────────────────────────── */}
-          {/* ── District ────────────────────────────────────────────────────── */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold">District</label>
-            <Select onValueChange={(v) => setValue("district", v, { shouldValidate: true })}>
-              <SelectTrigger className="h-12 w-full" size="lg"><SelectValue placeholder="Select District" /></SelectTrigger>
-              <SelectContent>
-                {districts?.map((d: StrapiItem) => (
-                  <SelectItem key={d.id} value={d.id.toString()}>{d.district_name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.district && <p className="text-xs text-destructive">{errors.district.message}</p>}
-          </div>
+        <div className="space-y-2">
+          <label className="text-sm font-semibold">District</label>
+          <Select
+            value={watch("district")}
+            onValueChange={(v) => setValue("district", v, { shouldValidate: true })}
+          >
+            <SelectTrigger className="h-12 w-full" size="lg"><SelectValue placeholder="Select District" /></SelectTrigger>
+            <SelectContent>
+              {districts?.map((d: StrapiItem) => (
+                <SelectItem key={d.documentId} value={d.documentId}>{d.district_name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors.district && <p className="text-xs text-destructive">{errors.district.message}</p>}
+        </div>
 
         {/* ── Amenities ────────────────────────────────────────────────────── */}
         <div className="border-t pt-8">
           <SearchableMultiSelect
             label="Amenities"
-            options={amenities?.map((a: StrapiItem) => ({ id: a.id, name: a.amenity_name })) || []}
+            options={amenities?.map((a: StrapiItem) => ({ id: a.documentId, name: a.amenity_name })) || []}
             selectedValues={watch("amenities") || []}
-            // onChange={(vals) => setValue("amenities", vals, { shouldValidate: true })}
             onChange={(vals) => setValue("amenities", vals.map(String), { shouldValidate: true })}
             error={errors.amenities?.message}
           />
