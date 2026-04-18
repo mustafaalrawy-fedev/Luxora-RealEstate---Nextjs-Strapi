@@ -39,6 +39,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::city.city"
+    },
+    "properties": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::property.property",
+      "mappedBy": "district"
     }
   }
 }

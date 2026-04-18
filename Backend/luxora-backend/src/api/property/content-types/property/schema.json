@@ -98,8 +98,9 @@
     },
     "district": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::district.district"
+      "relation": "manyToOne",
+      "target": "api::district.district",
+      "inversedBy": "properties"
     },
     "price": {
       "type": "decimal",
@@ -140,7 +141,7 @@
       "required": true,
       "min": 1
     },
-    "buildYear": {
+    "build_year": {
       "type": "date",
       "pluginOptions": {
         "i18n": {

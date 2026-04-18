@@ -792,6 +792,10 @@ export interface ApiDistrictDistrict extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::district.district'
     >;
+    properties: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::property.property'
+    >;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'district_name'> &
       Schema.Attribute.Required &
@@ -998,7 +1002,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
         },
         number
       >;
-    buildYear: Schema.Attribute.Date &
+    build_year: Schema.Attribute.Date &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1021,7 +1025,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    district: Schema.Attribute.Relation<'oneToOne', 'api::district.district'>;
+    district: Schema.Attribute.Relation<'manyToOne', 'api::district.district'>;
     featured: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

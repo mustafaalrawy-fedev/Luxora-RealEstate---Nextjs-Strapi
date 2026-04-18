@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-04-17T13:43:38.284Z"
+    "x-generation-date": "2026-04-18T16:51:24.530Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -16224,6 +16224,20 @@
                 ],
                 "example": "string or id"
               },
+              "properties": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "example": "string or id"
+                }
+              },
               "locale": {
                 "type": "string"
               },
@@ -16841,58 +16855,7 @@
               }
             }
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "publishedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "number"
-                  }
-                ]
-              },
-              "documentId": {
-                "type": "string"
-              }
-            }
-          },
-          "updatedBy": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "number"
-                  }
-                ]
-              },
-              "documentId": {
-                "type": "string"
-              }
-            }
-          },
-          "locale": {
-            "type": "string"
-          },
-          "localizations": {
+          "properties": {
             "type": "array",
             "items": {
               "type": "object",
@@ -16910,13 +16873,13 @@
                 "documentId": {
                   "type": "string"
                 },
-                "district_name": {
+                "property_name": {
                   "type": "string"
                 },
                 "slug": {
                   "type": "string"
                 },
-                "city": {
+                "property_type": {
                   "type": "object",
                   "properties": {
                     "id": {
@@ -16931,8 +16894,1912 @@
                     },
                     "documentId": {
                       "type": "string"
+                    },
+                    "type_name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "publishedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "updatedBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "locale": {
+                      "type": "string"
+                    },
+                    "localizations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   }
+                },
+                "featured_image": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "documentId": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "alternativeText": {
+                      "type": "string"
+                    },
+                    "caption": {
+                      "type": "string"
+                    },
+                    "focalPoint": {},
+                    "width": {
+                      "type": "integer"
+                    },
+                    "height": {
+                      "type": "integer"
+                    },
+                    "formats": {},
+                    "hash": {
+                      "type": "string"
+                    },
+                    "ext": {
+                      "type": "string"
+                    },
+                    "mime": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "previewUrl": {
+                      "type": "string"
+                    },
+                    "provider": {
+                      "type": "string"
+                    },
+                    "provider_metadata": {},
+                    "related": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "folder": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "pathId": {
+                          "type": "integer"
+                        },
+                        "parent": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "children": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "files": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "alternativeText": {
+                                "type": "string"
+                              },
+                              "caption": {
+                                "type": "string"
+                              },
+                              "focalPoint": {},
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              },
+                              "formats": {},
+                              "hash": {
+                                "type": "string"
+                              },
+                              "ext": {
+                                "type": "string"
+                              },
+                              "mime": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "number",
+                                "format": "float"
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "previewUrl": {
+                                "type": "string"
+                              },
+                              "provider": {
+                                "type": "string"
+                              },
+                              "provider_metadata": {},
+                              "related": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    },
+                                    "documentId": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "folder": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "folderPath": {
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "publishedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "createdBy": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "updatedBy": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "locale": {
+                                "type": "string"
+                              },
+                              "localizations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    },
+                                    "documentId": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "path": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "publishedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "createdBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "updatedBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "locale": {
+                          "type": "string"
+                        },
+                        "localizations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "folderPath": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "publishedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "updatedBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "locale": {
+                      "type": "string"
+                    },
+                    "localizations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "media": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "documentId": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "alternativeText": {
+                        "type": "string"
+                      },
+                      "caption": {
+                        "type": "string"
+                      },
+                      "focalPoint": {},
+                      "width": {
+                        "type": "integer"
+                      },
+                      "height": {
+                        "type": "integer"
+                      },
+                      "formats": {},
+                      "hash": {
+                        "type": "string"
+                      },
+                      "ext": {
+                        "type": "string"
+                      },
+                      "mime": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "number",
+                        "format": "float"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "previewUrl": {
+                        "type": "string"
+                      },
+                      "provider": {
+                        "type": "string"
+                      },
+                      "provider_metadata": {},
+                      "related": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "folder": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "folderPath": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "publishedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "createdBy": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "updatedBy": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "locale": {
+                        "type": "string"
+                      },
+                      "localizations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "video": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "documentId": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "alternativeText": {
+                      "type": "string"
+                    },
+                    "caption": {
+                      "type": "string"
+                    },
+                    "focalPoint": {},
+                    "width": {
+                      "type": "integer"
+                    },
+                    "height": {
+                      "type": "integer"
+                    },
+                    "formats": {},
+                    "hash": {
+                      "type": "string"
+                    },
+                    "ext": {
+                      "type": "string"
+                    },
+                    "mime": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "previewUrl": {
+                      "type": "string"
+                    },
+                    "provider": {
+                      "type": "string"
+                    },
+                    "provider_metadata": {},
+                    "related": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "folder": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "folderPath": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "publishedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "updatedBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "locale": {
+                      "type": "string"
+                    },
+                    "localizations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "short_description": {
+                  "type": "string"
+                },
+                "long_description": {
+                  "type": "string"
+                },
+                "district": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "documentId": {
+                      "type": "string"
+                    },
+                    "district_name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "properties": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "publishedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "updatedBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "locale": {
+                      "type": "string"
+                    },
+                    "localizations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "area_size_sqft": {
+                  "type": "integer"
+                },
+                "bedroom": {
+                  "type": "integer"
+                },
+                "bathroom": {
+                  "type": "integer"
+                },
+                "build_year": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "property_status": {
+                  "type": "string",
+                  "enum": [
+                    "Sale",
+                    "Rent",
+                    "Sold"
+                  ]
+                },
+                "construction_status": {
+                  "type": "string",
+                  "enum": [
+                    "Finished",
+                    "Under Construction"
+                  ]
+                },
+                "amenities": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "documentId": {
+                        "type": "string"
+                      },
+                      "amenity_name": {
+                        "type": "string"
+                      },
+                      "slug": {
+                        "type": "string"
+                      },
+                      "short_description": {
+                        "type": "string"
+                      },
+                      "amenity_image": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "alternativeText": {
+                            "type": "string"
+                          },
+                          "caption": {
+                            "type": "string"
+                          },
+                          "focalPoint": {},
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          },
+                          "formats": {},
+                          "hash": {
+                            "type": "string"
+                          },
+                          "ext": {
+                            "type": "string"
+                          },
+                          "mime": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "previewUrl": {
+                            "type": "string"
+                          },
+                          "provider": {
+                            "type": "string"
+                          },
+                          "provider_metadata": {},
+                          "related": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "folder": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "folderPath": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "publishedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "createdBy": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "updatedBy": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "locale": {
+                            "type": "string"
+                          },
+                          "localizations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "category": {
+                        "type": "string",
+                        "enum": [
+                          "Indoor",
+                          "Outdoor",
+                          "Services",
+                          "Smart",
+                          "Leisure"
+                        ]
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "publishedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "createdBy": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "updatedBy": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "locale": {
+                        "type": "string"
+                      },
+                      "localizations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "featured": {
+                  "type": "boolean"
+                },
+                "agent": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "documentId": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "provider": {
+                      "type": "string"
+                    },
+                    "resetPasswordToken": {
+                      "type": "string"
+                    },
+                    "confirmationToken": {
+                      "type": "string"
+                    },
+                    "confirmed": {
+                      "type": "boolean"
+                    },
+                    "blocked": {
+                      "type": "boolean"
+                    },
+                    "role": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "permissions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              },
+                              "action": {
+                                "type": "string"
+                              },
+                              "role": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "publishedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "createdBy": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "updatedBy": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "locale": {
+                                "type": "string"
+                              },
+                              "localizations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    },
+                                    "documentId": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "users": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "publishedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "createdBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "updatedBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "locale": {
+                          "type": "string"
+                        },
+                        "localizations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "avatar": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "alternativeText": {
+                          "type": "string"
+                        },
+                        "caption": {
+                          "type": "string"
+                        },
+                        "focalPoint": {},
+                        "width": {
+                          "type": "integer"
+                        },
+                        "height": {
+                          "type": "integer"
+                        },
+                        "formats": {},
+                        "hash": {
+                          "type": "string"
+                        },
+                        "ext": {
+                          "type": "string"
+                        },
+                        "mime": {
+                          "type": "string"
+                        },
+                        "size": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "url": {
+                          "type": "string"
+                        },
+                        "previewUrl": {
+                          "type": "string"
+                        },
+                        "provider": {
+                          "type": "string"
+                        },
+                        "provider_metadata": {},
+                        "related": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "folder": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "folderPath": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "publishedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "createdBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "updatedBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "locale": {
+                          "type": "string"
+                        },
+                        "localizations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "bio": {
+                      "type": "string"
+                    },
+                    "social_links": {},
+                    "properties": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "terms": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "publishedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "updatedBy": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "documentId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "locale": {
+                      "type": "string"
+                    },
+                    "localizations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "documentId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "developer": {
+                  "type": "string"
                 },
                 "createdAt": {
                   "type": "string",
@@ -17005,6 +18872,78 @@
                       }
                     }
                   }
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "documentId": {
+                "type": "string"
+              }
+            }
+          },
+          "updatedBy": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "documentId": {
+                "type": "string"
+              }
+            }
+          },
+          "locale": {
+            "type": "string"
+          },
+          "localizations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "documentId": {
+                  "type": "string"
                 }
               }
             }
@@ -19748,7 +21687,7 @@
               "bathroom": {
                 "type": "integer"
               },
-              "buildYear": {
+              "build_year": {
                 "type": "string",
                 "format": "date"
               },
@@ -21362,850 +23301,6 @@
                   }
                 }
               },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "publishedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "createdBy": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
-                  },
-                  "documentId": {
-                    "type": "string"
-                  }
-                }
-              },
-              "updatedBy": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
-                  },
-                  "documentId": {
-                    "type": "string"
-                  }
-                }
-              },
-              "locale": {
-                "type": "string"
-              },
-              "localizations": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "oneOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    "documentId": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "price": {
-            "type": "number",
-            "format": "float"
-          },
-          "area_size_sqft": {
-            "type": "integer"
-          },
-          "bedroom": {
-            "type": "integer"
-          },
-          "bathroom": {
-            "type": "integer"
-          },
-          "buildYear": {
-            "type": "string",
-            "format": "date"
-          },
-          "property_status": {
-            "type": "string",
-            "enum": [
-              "Sale",
-              "Rent",
-              "Sold"
-            ]
-          },
-          "construction_status": {
-            "type": "string",
-            "enum": [
-              "Finished",
-              "Under Construction"
-            ]
-          },
-          "amenities": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "oneOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    }
-                  ]
-                },
-                "documentId": {
-                  "type": "string"
-                },
-                "amenity_name": {
-                  "type": "string"
-                },
-                "slug": {
-                  "type": "string"
-                },
-                "short_description": {
-                  "type": "string"
-                },
-                "amenity_image": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "oneOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    "documentId": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "alternativeText": {
-                      "type": "string"
-                    },
-                    "caption": {
-                      "type": "string"
-                    },
-                    "focalPoint": {},
-                    "width": {
-                      "type": "integer"
-                    },
-                    "height": {
-                      "type": "integer"
-                    },
-                    "formats": {},
-                    "hash": {
-                      "type": "string"
-                    },
-                    "ext": {
-                      "type": "string"
-                    },
-                    "mime": {
-                      "type": "string"
-                    },
-                    "size": {
-                      "type": "number",
-                      "format": "float"
-                    },
-                    "url": {
-                      "type": "string"
-                    },
-                    "previewUrl": {
-                      "type": "string"
-                    },
-                    "provider": {
-                      "type": "string"
-                    },
-                    "provider_metadata": {},
-                    "related": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              }
-                            ]
-                          },
-                          "documentId": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
-                    "folder": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "folderPath": {
-                      "type": "string"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "publishedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "createdBy": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "updatedBy": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "locale": {
-                      "type": "string"
-                    },
-                    "localizations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              }
-                            ]
-                          },
-                          "documentId": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "category": {
-                  "type": "string",
-                  "enum": [
-                    "Indoor",
-                    "Outdoor",
-                    "Services",
-                    "Smart",
-                    "Leisure"
-                  ]
-                },
-                "createdAt": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "updatedAt": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "publishedAt": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "createdBy": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "oneOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    "documentId": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "updatedBy": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "oneOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    "documentId": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "locale": {
-                  "type": "string"
-                },
-                "localizations": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "oneOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      "documentId": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "featured": {
-            "type": "boolean"
-          },
-          "agent": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "number"
-                  }
-                ]
-              },
-              "documentId": {
-                "type": "string"
-              },
-              "username": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "provider": {
-                "type": "string"
-              },
-              "resetPasswordToken": {
-                "type": "string"
-              },
-              "confirmationToken": {
-                "type": "string"
-              },
-              "confirmed": {
-                "type": "boolean"
-              },
-              "blocked": {
-                "type": "boolean"
-              },
-              "role": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
-                  },
-                  "documentId": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "permissions": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        },
-                        "action": {
-                          "type": "string"
-                        },
-                        "role": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "oneOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "number"
-                                }
-                              ]
-                            },
-                            "documentId": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "publishedAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "createdBy": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "oneOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "number"
-                                }
-                              ]
-                            },
-                            "documentId": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "updatedBy": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "oneOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "number"
-                                }
-                              ]
-                            },
-                            "documentId": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "locale": {
-                          "type": "string"
-                        },
-                        "localizations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "oneOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "number"
-                                  }
-                                ]
-                              },
-                              "documentId": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "users": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "publishedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "createdBy": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "oneOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      "documentId": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "updatedBy": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "oneOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      "documentId": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "locale": {
-                    "type": "string"
-                  },
-                  "localizations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "avatar": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
-                  },
-                  "documentId": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "alternativeText": {
-                    "type": "string"
-                  },
-                  "caption": {
-                    "type": "string"
-                  },
-                  "focalPoint": {},
-                  "width": {
-                    "type": "integer"
-                  },
-                  "height": {
-                    "type": "integer"
-                  },
-                  "formats": {},
-                  "hash": {
-                    "type": "string"
-                  },
-                  "ext": {
-                    "type": "string"
-                  },
-                  "mime": {
-                    "type": "string"
-                  },
-                  "size": {
-                    "type": "number",
-                    "format": "float"
-                  },
-                  "url": {
-                    "type": "string"
-                  },
-                  "previewUrl": {
-                    "type": "string"
-                  },
-                  "provider": {
-                    "type": "string"
-                  },
-                  "provider_metadata": {},
-                  "related": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "folder": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "oneOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      "documentId": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "folderPath": {
-                    "type": "string"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "publishedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "createdBy": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "oneOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      "documentId": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "updatedBy": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "oneOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      "documentId": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "locale": {
-                    "type": "string"
-                  },
-                  "localizations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
-                        },
-                        "documentId": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "phone": {
-                "type": "string"
-              },
-              "bio": {
-                "type": "string"
-              },
-              "social_links": {},
               "properties": {
                 "type": "array",
                 "items": {
@@ -22804,7 +23899,7 @@
                     "bathroom": {
                       "type": "integer"
                     },
-                    "buildYear": {
+                    "build_year": {
                       "type": "string",
                       "format": "date"
                     },
@@ -22840,6 +23935,269 @@
                           },
                           "documentId": {
                             "type": "string"
+                          },
+                          "amenity_name": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "short_description": {
+                            "type": "string"
+                          },
+                          "amenity_image": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "alternativeText": {
+                                "type": "string"
+                              },
+                              "caption": {
+                                "type": "string"
+                              },
+                              "focalPoint": {},
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              },
+                              "formats": {},
+                              "hash": {
+                                "type": "string"
+                              },
+                              "ext": {
+                                "type": "string"
+                              },
+                              "mime": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "number",
+                                "format": "float"
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "previewUrl": {
+                                "type": "string"
+                              },
+                              "provider": {
+                                "type": "string"
+                              },
+                              "provider_metadata": {},
+                              "related": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    },
+                                    "documentId": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "folder": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "folderPath": {
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "publishedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "createdBy": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "updatedBy": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "locale": {
+                                "type": "string"
+                              },
+                              "localizations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        }
+                                      ]
+                                    },
+                                    "documentId": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "category": {
+                            "type": "string",
+                            "enum": [
+                              "Indoor",
+                              "Outdoor",
+                              "Services",
+                              "Smart",
+                              "Leisure"
+                            ]
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "publishedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "createdBy": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "updatedBy": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "locale": {
+                            "type": "string"
+                          },
+                          "localizations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -22862,6 +24220,537 @@
                         },
                         "documentId": {
                           "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "provider": {
+                          "type": "string"
+                        },
+                        "resetPasswordToken": {
+                          "type": "string"
+                        },
+                        "confirmationToken": {
+                          "type": "string"
+                        },
+                        "confirmed": {
+                          "type": "boolean"
+                        },
+                        "blocked": {
+                          "type": "boolean"
+                        },
+                        "role": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "permissions": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  },
+                                  "action": {
+                                    "type": "string"
+                                  },
+                                  "role": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "oneOf": [
+                                          {
+                                            "type": "string"
+                                          },
+                                          {
+                                            "type": "number"
+                                          }
+                                        ]
+                                      },
+                                      "documentId": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "publishedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "createdBy": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "oneOf": [
+                                          {
+                                            "type": "string"
+                                          },
+                                          {
+                                            "type": "number"
+                                          }
+                                        ]
+                                      },
+                                      "documentId": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "updatedBy": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "oneOf": [
+                                          {
+                                            "type": "string"
+                                          },
+                                          {
+                                            "type": "number"
+                                          }
+                                        ]
+                                      },
+                                      "documentId": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "locale": {
+                                    "type": "string"
+                                  },
+                                  "localizations": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "oneOf": [
+                                            {
+                                              "type": "string"
+                                            },
+                                            {
+                                              "type": "number"
+                                            }
+                                          ]
+                                        },
+                                        "documentId": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "users": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "publishedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "createdBy": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "updatedBy": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "locale": {
+                              "type": "string"
+                            },
+                            "localizations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "avatar": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "alternativeText": {
+                              "type": "string"
+                            },
+                            "caption": {
+                              "type": "string"
+                            },
+                            "focalPoint": {},
+                            "width": {
+                              "type": "integer"
+                            },
+                            "height": {
+                              "type": "integer"
+                            },
+                            "formats": {},
+                            "hash": {
+                              "type": "string"
+                            },
+                            "ext": {
+                              "type": "string"
+                            },
+                            "mime": {
+                              "type": "string"
+                            },
+                            "size": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "previewUrl": {
+                              "type": "string"
+                            },
+                            "provider": {
+                              "type": "string"
+                            },
+                            "provider_metadata": {},
+                            "related": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "folder": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "folderPath": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "publishedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "createdBy": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "updatedBy": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    }
+                                  ]
+                                },
+                                "documentId": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "locale": {
+                              "type": "string"
+                            },
+                            "localizations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "documentId": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "phone": {
+                          "type": "string"
+                        },
+                        "bio": {
+                          "type": "string"
+                        },
+                        "social_links": {},
+                        "properties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "terms": {
+                          "type": "boolean"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "publishedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "createdBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "updatedBy": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            "documentId": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "locale": {
+                          "type": "string"
+                        },
+                        "localizations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "documentId": {
+                                "type": "string"
+                              }
+                            }
+                          }
                         }
                       }
                     },
@@ -22943,9 +24832,6 @@
                   }
                 }
               },
-              "terms": {
-                "type": "boolean"
-              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -23017,6 +24903,80 @@
                     }
                   }
                 }
+              }
+            }
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "area_size_sqft": {
+            "type": "integer"
+          },
+          "bedroom": {
+            "type": "integer"
+          },
+          "bathroom": {
+            "type": "integer"
+          },
+          "build_year": {
+            "type": "string",
+            "format": "date"
+          },
+          "property_status": {
+            "type": "string",
+            "enum": [
+              "Sale",
+              "Rent",
+              "Sold"
+            ]
+          },
+          "construction_status": {
+            "type": "string",
+            "enum": [
+              "Finished",
+              "Under Construction"
+            ]
+          },
+          "amenities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "documentId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "agent": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "documentId": {
+                "type": "string"
               }
             }
           },
