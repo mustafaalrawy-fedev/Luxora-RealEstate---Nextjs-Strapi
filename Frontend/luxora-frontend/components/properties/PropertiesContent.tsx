@@ -4,14 +4,6 @@ import Image from 'next/image'
 import PropertyCard from './PropertyCard'
 import MainHeading from '../shared/MainHeading'
 import PropertyDetailsResponse from '@/types/property'
-// import {
-//   Pagination,
-//   PaginationContent,
-//   PaginationItem,
-//   PaginationLink,
-//   PaginationNext,
-//   PaginationPrevious,
-// } from "@/components/ui/pagination"
 import PropertyPagination from './PropertyPagination'
 import { PropertiesSkeleton } from '../shared/LoadingState'
 import ErrorState from '../shared/ErrorState'

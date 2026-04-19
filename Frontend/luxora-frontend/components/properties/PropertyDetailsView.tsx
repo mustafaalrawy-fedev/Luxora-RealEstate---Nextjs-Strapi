@@ -12,6 +12,7 @@ import qs from 'qs'
 import { cn } from '@/lib/utils'
 import { PropertiesSkeleton } from '../shared/LoadingState'
 import ErrorState from '../shared/ErrorState'
+import InquiryForm from '../forms/InquiryForm'
 
 export default function PropertyDetailsView({ slug }: { slug: string }) {
     
@@ -55,13 +56,14 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
     // بما أننا نستخدم filter slug، فمن المفترض وجود عنصر واحد فقط
     const property = data[0];
     const { 
-        id, price, area_size_sqft, bedroom, bathroom, 
+        id, price, area_size_sqft, bedroom, bathroom, build_year, 
         property_status, property_name, featured_image, 
         short_description, long_description, media, 
-        amenities, property_type, district, agent 
+        amenities, property_type, district, agent, developer, construction_status
     } = property;
 
   return (
+    <>
     <div className={cn("w-full transition-opacity duration-300", isPlaceholderData && "opacity-50")}>
         <section key={id} className='flex flex-col gap-10 h-fit w-full'>
             <div className='flex flex-col lg:flex-row justify-between w-full h-fit items-center gap-20'>
@@ -138,7 +140,7 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
                 <aside className='w-full h-fit sticky top-24 space-y-6'>
                     <div className="bg-card p-6 rounded-2xl border shadow-sm">
                         <Badge className='text-lg mb-4' variant={property_status === 'Sale' ? 'default' : 'secondary'}>For {property_status}</Badge>
-                        <h3 className="text-3xl font-bold text-primary mb-6">{formatCurrency(price)}</h3>
+                        <h3 className={cn("text-3xl font-bold text-primary mb-6", property_status === 'Rent' && "text-secondary")}>{formatCurrency(price)}</h3>
                         
                         <div className="space-y-4 mb-8">
                             <div className='flex items-center justify-between text-sm py-2 border-b'>
@@ -149,9 +151,21 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
                                 <span className="text-muted-foreground">Bedrooms</span>
                                 <span className="font-bold">{bedroom}</span>
                             </div>
-                            <div className='flex items-center justify-between text-sm py-2'>
+                            <div className='flex items-center justify-between text-sm py-2 border-b'>
                                 <span className="text-muted-foreground">Bathrooms</span>
                                 <span className="font-bold">{bathroom}</span>
+                            </div>
+                            <div className='flex items-center justify-between text-sm py-2 border-b'>
+                                <span className="text-muted-foreground">Developer</span>
+                                <span className="font-bold">{developer || "N/A"}</span>
+                            </div>
+                            <div className='flex items-center justify-between text-sm py-2 border-b'>
+                                <span className="text-muted-foreground">Construction Status</span>
+                                <span className="font-bold">{construction_status || "N/A"}</span>
+                            </div>
+                            <div className='flex items-center justify-between text-sm py-2 border-b'>
+                                <span className="text-muted-foreground">Build Year</span>
+                                <span className="font-bold">{build_year ? new Date(build_year).getFullYear() : "N/A"}</span>
                             </div>
                         </div>
 
@@ -172,7 +186,7 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
                             </div>
                         </div>
 
-                        <Button className='w-full py-6 text-lg gap-2 shadow-lg shadow-primary/20 hover:gap-4 transition-all'>
+                        <Button className={cn("w-full py-6 text-lg gap-2 hover:gap-4 transition-all", property_status === 'Rent' && "bg-secondary hover:bg-secondary/80")}>
                             Have Questions? <ArrowRight size={20} />
                         </Button>
                     </div>
@@ -180,6 +194,8 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
             </article>
         </section>
     </div>
+    <InquiryForm propertyId={id} agentId={agent?.id} />
+    </>
   )
 }
     

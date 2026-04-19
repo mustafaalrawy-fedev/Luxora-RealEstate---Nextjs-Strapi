@@ -74,7 +74,8 @@ const PropertyFilter = () => {
 
   return (
     <aside className="w-full bg-card rounded-md p-8 shadow-xl border">
-      <div className="flex justify-between items-center flex-row gap-5">
+      {/* <div className="flex justify-between items-center flex-row gap-5"> */}
+      <div className="flex justify-between items-center flex-row  gap-5">
 
         {/* 
         ========================

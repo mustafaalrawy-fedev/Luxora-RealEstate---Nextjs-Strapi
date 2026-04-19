@@ -21,7 +21,7 @@ export const useProperties = ({filter=true, pageSizeAmount=9}: {filter?: boolean
     = Pagination =
     ================
     */
-    const [currentPage, setCurrentPage] = useState(1)
+    const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1)
     const page = searchParams.get('page') || currentPage
     const pageSize = pageSizeAmount
 
@@ -74,7 +74,7 @@ export const useProperties = ({filter=true, pageSizeAmount=9}: {filter?: boolean
         agent: { populate: {properties: {populate: "*"}} }
         },
         pagination: {
-        page: currentPage,
+        page: page,
         pageSize: pageSize,
         },
         filters: {
@@ -109,8 +109,12 @@ export const useProperties = ({filter=true, pageSizeAmount=9}: {filter?: boolean
             const res = await axiosInstance.get(`/properties?${query}`) // All properties
             return res.data
         },
-        staleTime: 5 * 60 * 1000,
-        gcTime: 10 * 60 * 1000,
+        // staleTime: 5 * 60 * 1000,
+        // gcTime: 10 * 60 * 1000,
+        staleTime: 0,               // Data is considered "old" immediately
+        refetchOnMount: true,       // Refetch every time the component loads
+        refetchOnWindowFocus: true, // Refetch when the user switches tabs back to your app
+        // refetchInterval: 10000,     // (Optional) Poll the server every 10 seconds for new listings
     })
 
     const properties = data?.data

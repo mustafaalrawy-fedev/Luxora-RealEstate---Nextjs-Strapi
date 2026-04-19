@@ -48,8 +48,11 @@ const AgentPropertiesPage = () => {
         return res.data
     },
     enabled: !!profile?.id,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
+    staleTime: 0,
+    gcTime: 0,
+    // refetchInterval: 5 * 60 * 1000,
+    refetchOnWindowFocus: true, // Refetch when the user switches tabs back to your app
+    refetchOnMount: true,       // Refetch every time the component loads
     })
 
     const properties = data?.data

@@ -10,6 +10,9 @@ interface PropertyDetails {
     slug: string;
     short_description: string;
     long_description: string;
+    developer: string;
+    construction_status: string;
+    build_year: string;
     publishedAt?: string | null;
     featured_image: {
         url: string;
@@ -72,16 +75,16 @@ interface PropertyDetails {
     }
 }
 
-interface PropertyDetailsResponse {
-    data: PropertyDetails[];
-    meta: {
-        pagination: {
-            page: number;
-            pageSize: number;
-            pageCount: number;
-            total: number;
-        }
-    }
-}
+// interface PropertyDetailsResponse {
+//     data: PropertyDetails[];
+//     meta: {
+//         pagination: {
+//             page: number;
+//             pageSize: number;
+//             pageCount: number;
+//             total: number;
+//         }
+//     }
+// }
 
 export default PropertyDetails

@@ -1,54 +1,58 @@
 "use client";
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { toast } from "sonner";
 import axiosInstance from "@/lib/axios";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageSquare, Send } from "lucide-react";
+import { inquirySchema, type InquiryValues } from "@/lib/validations/inquiry";
+import { Input } from "@/components/ui/input";
 
-const inquirySchema = z.object({
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
 
-interface InquiryFormProps {
-  propertyId: number;
-  agentId: number;
-}
-
-export const InquiryForm = ({ propertyId, agentId }: InquiryFormProps) => {
-  const { data: session } = useSession();
+export default function InquiryForm({ propertyId, agentId }: { propertyId: number | string, agentId: number | string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
-    resolver: zodResolver(inquirySchema),
-  });
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
+  resolver: zodResolver(inquirySchema),
+  defaultValues: {
+    full_name: "",
+    email: "",
+    phone: "",
+    message: "",
+    property: propertyId, // Pass them here directly
+    agent: agentId,       // Pass them here directly
+    inquiry_status: "New",
+  },
+});
 
-  const onSubmit = async (data: { message: string }) => {
-    if (!session) {
-      toast.error("Please login to send an inquiry");
-      return;
-    }
+// 2. Use useEffect to ensure values stay synced if the props change
+useEffect(() => {
+  setValue("property", propertyId);
+  setValue("agent", agentId);
+}, [propertyId, agentId, setValue]);
 
+  const onSubmit = async (data: InquiryValues) => {
     setIsSubmitting(true);
     try {
       await axiosInstance.post("/inquiries", {
         data: {
-          message: data.message,
-          property: propertyId,
-          agent: agentId,
-          buyer: session.user.id,
-          status: "pending",
+          full_name:          data.full_name,
+          email:             data.email,
+          phone:             data.phone,
+          message:           data.message,
+          property:          data.property,
+          agent:             data.agent,
+          inquiry_status:    data.inquiry_status,
         },
       });
 
       toast.success("Inquiry sent to the agent!");
       reset();
     } catch (error) {
+      console.log(error);
       toast.error("Failed to send inquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -56,26 +60,77 @@ export const InquiryForm = ({ propertyId, agentId }: InquiryFormProps) => {
   };
 
   return (
-    <div className="p-6 border rounded-2xl bg-card/50 backdrop-blur-sm border-primary/10">
-      <div className="flex items-center gap-2 mb-4">
+    <div className="p-7 border rounded-2xl bg-card/50 backdrop-blur-sm border-primary/10 mt-56">
+      {/* Agent Info */}
+      <div className="flex items-center gap-2 mb-8">
         <MessageSquare className="text-primary" size={20} />
         <h3 className="font-semibold text-lg">Interested in this property?</h3>
       </div>
-      
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <Textarea 
-          {...register("message")}
-          placeholder="Ask the agent about pricing, viewing times, or specific details..."
-          className="min-h-[120px] bg-background/50 resize-none rounded-xl"
-        />
+
+      {/* Inquiry Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+
+        <input type="hidden" {...register("property")} value={propertyId} />
+        <input type="hidden" {...register("agent")} value={agentId} />
+        <input type="hidden" {...register("inquiry_status")} value="New" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label htmlFor="full_name">Full Name</label>
+            <Input
+              id="full_name"
+              type="text"
+              {...register("full_name")}
+              placeholder="Your full name"
+              className="rounded-xl"
+            />
+            {errors.full_name && (
+              <p className="text-xs text-destructive">{errors.full_name.message as string}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="email">Email</label>
+            <Input
+              id="email"
+              type="email"
+              {...register("email")}
+              placeholder="Your email address"
+              className="rounded-xl"
+            />
+            {errors.email && (
+              <p className="text-xs text-destructive">{errors.email.message as string}</p>
+            )}
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="phone">Phone</label>
+          <Input
+            id="phone"
+            type="text"
+            {...register("phone")}
+            placeholder="Your phone number"
+            className="rounded-xl"
+          />
+          {errors.phone && (
+            <p className="text-xs text-destructive">{errors.phone.message as string}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="message">Message</label>
+          <Textarea 
+            {...register("message")}
+            placeholder="Ask the agent about pricing, viewing times, or specific details..."
+            className="min-h-[120px] bg-background/50 resize-none rounded-xl"
+          />
         {errors.message && (
           <p className="text-xs text-destructive">{errors.message.message as string}</p>
         )}
+        </div>
 
         <Button 
           type="submit" 
           disabled={isSubmitting} 
-          className="w-full bg-primary hover:bg-primary/90 rounded-xl py-6"
+          className="w-fit bg-primary hover:bg-primary/90 rounded-xl"
         >
           {isSubmitting ? "Sending..." : (
             <span className="flex items-center gap-2">
