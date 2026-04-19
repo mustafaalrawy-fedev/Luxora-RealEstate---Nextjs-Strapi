@@ -43,7 +43,7 @@ const LoginForm = () => {
     }
 
   return (
-   <article className="container-space w-full h-full flex flex-col justify-center items-center relative">
+    <article className="container-space w-max lg:w-full h-full flex flex-col justify-center items-center relative">
         <User className="text-primary mb-5" size={48} strokeWidth={1.5} />
         <div className="w-full flex justify-center text-center">
             <MainHeading title="Login" description="Login to your account" showButton={false} />

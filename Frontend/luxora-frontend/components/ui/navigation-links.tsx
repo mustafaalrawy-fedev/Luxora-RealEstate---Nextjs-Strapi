@@ -52,7 +52,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ]
 
-export function NavigationLinks({ className }: { className?: string }) {
+export function NavigationLinks({ className, setIsOpen }: { className?: string, setIsOpen?: (value: boolean) => void }) {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
   const linkClass = (href: string) => 
@@ -101,7 +101,7 @@ export function NavigationLinks({ className }: { className?: string }) {
         {NAV_LINKS.map((link) => (
           <NavigationMenuItem key={link.id}>
             <NavigationMenuLink asChild className={`${linkClass(link.href)} p-0`}>
-              <Link href={link.href}>{link.label}</Link>
+              <Link onClick={() => setIsOpen(false)} href={link.href}>{link.label}</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
         ))}

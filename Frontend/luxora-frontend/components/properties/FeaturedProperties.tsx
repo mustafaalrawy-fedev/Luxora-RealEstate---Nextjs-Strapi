@@ -46,7 +46,7 @@ export default function FeaturedProperties () {
 
   return (
     <section className="container-space py-20 h-fit">
-      <MainHeading title="Featured Properties" description="Premium real estate designed for those who seek sophistication, exclusivity, and timeless value." buttonText="View All Properties" buttonLink="/properties" buttonVariant="outline" showButton={true}/>
+      <MainHeading title="Featured Properties" description="Premium real estate designed for those who seek sophistication, exclusivity, and timeless value." buttonText="View All Properties" buttonLink="/properties" buttonVariant="outline" showButton={true} />
       {isLoading ? <PropertiesSkeleton count={3} /> : error ? <ErrorState variant="Featured" /> : (
         data?.length === 0 ? (
             <ErrorState variant="Featured" />

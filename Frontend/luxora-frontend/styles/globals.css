@@ -99,7 +99,8 @@
   --foreground: oklch(0.145 0 0);           /* Primary text color (Near Black) */
 
   /* --- Surface Components (Cards & Menus) --- */
-  --card: oklch(1 0 0);                     /* Background of Property Cards */
+ /* --card: oklch(1 0 0);*/                     /* Background of Property Cards */
+  --card: oklch(98.5% 0 0);
   --card-foreground: oklch(0.145 0 0);      /* Text inside Property Cards */
   --popover: oklch(1 0 0);                  /* Background of Tooltips and Select Menus */
   --popover-foreground: oklch(0.145 0 0);   /* Text inside Tooltips and Select Menus */

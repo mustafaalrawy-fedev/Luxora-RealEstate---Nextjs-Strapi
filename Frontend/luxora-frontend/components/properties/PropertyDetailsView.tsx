@@ -6,7 +6,7 @@ import PropertyDetails from '@/types/property'
 import Image from 'next/image'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import { MapPin, ArrowRight } from 'lucide-react'
+import { MapPin, ArrowRight, User } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import qs from 'qs'
 import { cn } from '@/lib/utils'
@@ -145,15 +145,15 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
                         <div className="space-y-4 mb-8">
                             <div className='flex items-center justify-between text-sm py-2 border-b'>
                                 <span className="text-muted-foreground">Living Space</span>
-                                <span className="font-bold">{area_size_sqft} sqft</span>
+                                <span className="font-bold">{area_size_sqft || "N/A"} sqft</span>
                             </div>
                             <div className='flex items-center justify-between text-sm py-2 border-b'>
                                 <span className="text-muted-foreground">Bedrooms</span>
-                                <span className="font-bold">{bedroom}</span>
+                                <span className="font-bold">{bedroom || "N/A"}</span>
                             </div>
                             <div className='flex items-center justify-between text-sm py-2 border-b'>
                                 <span className="text-muted-foreground">Bathrooms</span>
-                                <span className="font-bold">{bathroom}</span>
+                                <span className="font-bold">{bathroom || "N/A"}</span>
                             </div>
                             <div className='flex items-center justify-between text-sm py-2 border-b'>
                                 <span className="text-muted-foreground">Developer</span>
@@ -172,6 +172,7 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
                         {/* Agent Info */}
                         <div className='flex items-center gap-4 p-4 rounded-xl bg-muted/50 mb-6'>
                             <div className="relative w-12 h-12">
+                                {agent?.avatar?.url ? (
                                 <Image 
                                     src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${agent?.avatar?.url}`} 
                                     alt={agent?.username} 
@@ -179,6 +180,7 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
                                     className='object-cover rounded-full border-2 border-background' 
                                     unoptimized 
                                 />
+                                ): <User size={24} className="text-primary bg-primary/20 rounded-full p-2 w-full h-full" /> }
                             </div>
                             <div>
                                 <p className="text-xs text-muted-foreground">Listed by</p>
