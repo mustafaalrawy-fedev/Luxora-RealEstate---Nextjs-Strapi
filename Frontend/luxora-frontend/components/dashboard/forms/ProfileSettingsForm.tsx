@@ -26,7 +26,7 @@ const ProfileSettingsForm = () => {
     reset,
     watch,
     formState: { isSubmitting, errors },
-  } = useForm<ProfileValues>({
+  } = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       avatar: "",
@@ -58,7 +58,7 @@ const ProfileSettingsForm = () => {
         facebook:  userData.social_links?.facebook  ?? "",
         twitter:   userData.social_links?.twitter   ?? "",
         instagram: userData.social_links?.instagram ?? "",
-        linkedin:  userData.social_links?.Linkedin  ?? "", // capital L in Strapi
+        linkedin:  userData.social_links?.linkedin  ?? "",
       },
       // Store the full URL so <Image> can use it directly
       avatar: userData.avatar?.url
@@ -110,7 +110,7 @@ const ProfileSettingsForm = () => {
               facebook:  data.socialLinks.facebook,
               twitter:   data.socialLinks.twitter,
               instagram: data.socialLinks.instagram,
-              Linkedin:  data.socialLinks.linkedin, // capital L
+              linkedin:  data.socialLinks.linkedin, 
             },
             ...(avatarId !== undefined && { avatar: avatarId }),
           }),

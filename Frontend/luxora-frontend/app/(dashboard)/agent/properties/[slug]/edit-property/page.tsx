@@ -29,6 +29,7 @@ interface StrapiItem {
   type_name?: string;
   amenity_name?: string;
   district_name?: string;
+  // is_approved?: "pending" | "approved" | "rejected";
 }
 
 const EditPropertyPage = () => {
@@ -57,7 +58,7 @@ const EditPropertyPage = () => {
     watch,
     reset,
     formState: { errors },
-  } = useForm<PropertyValues>({
+  } = useForm({
     resolver: zodResolver(propertySchema),
   });
 
@@ -90,6 +91,7 @@ const EditPropertyPage = () => {
         property_type: property.property_type?.documentId,
         amenities: property.amenities?.map((a: {documentId: string}) => a.documentId) || [],
         agent: property.agent?.documentId,
+        is_approved: property.is_approved,
       });
 
       if (property.featured_image) setPreviewImage(`${process.env.NEXT_PUBLIC_STRAPI_URL}${property.featured_image.url}`);
@@ -196,6 +198,7 @@ const EditPropertyPage = () => {
             amenities: { set: data.amenities },
             featured_image: featuredId,
             media: finalMediaIds,
+            is_approved: data.is_approved,
           },
         }),
       });
@@ -301,14 +304,17 @@ const EditPropertyPage = () => {
                 <SelectItem value="Rent">For Rent</SelectItem>
               </SelectContent>
             </Select>
+            {errors.property_status && <p className="text-destructive text-xs">{errors.property_status.message}</p>}
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Price (EGP)</label>
             <Input type="number" {...register("price")} className="h-12" />
+            {errors.price && <p className="text-destructive text-xs">{errors.price.message}</p>}
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Area (sqft)</label>
             <Input type="number" {...register("area_size_sqft")} className="h-12" />
+            {errors.area_size_sqft && <p className="text-destructive text-xs">{errors.area_size_sqft.message}</p>}
           </div>
         </div>
 
@@ -317,10 +323,12 @@ const EditPropertyPage = () => {
           <div className="space-y-2">
             <label className="text-sm font-semibold">Short Description</label>
             <Input {...register("short_description")} className="h-12" />
+            {errors.short_description && <p className="text-destructive text-xs">{errors.short_description.message}</p>}
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Detailed Description</label>
             <Textarea {...register("long_description")} className="min-h-[150px]" />
+            {errors.long_description && <p className="text-destructive text-xs">{errors.long_description.message}</p>}
           </div>
         </div>
 
@@ -336,14 +344,17 @@ const EditPropertyPage = () => {
                 ))}
               </SelectContent>
             </Select>
+            {errors.property_type && <p className="text-destructive text-xs">{errors.property_type.message}</p>}
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Bedrooms</label>
             <Input type="number" {...register("bedroom")} className="h-12" />
+            {errors.bedroom && <p className="text-destructive text-xs">{errors.bedroom.message}</p>}
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Bathrooms</label>
             <Input type="number" {...register("bathroom")} className="h-12" />
+            {errors.bathroom && <p className="text-destructive text-xs">{errors.bathroom.message}</p>}
           </div>
         </div>
 
@@ -361,14 +372,17 @@ const EditPropertyPage = () => {
                 <SelectItem value="Under Construction">Under Construction</SelectItem>
               </SelectContent>
             </Select>
+            {errors.construction_status && <p className="text-destructive text-xs">{errors.construction_status.message}</p>}
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Build Year</label>
             <Input {...register("build_year")} className="h-12" maxLength={4} />
+            {errors.build_year && <p className="text-destructive text-xs">{errors.build_year.message}</p>}
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Developer Name</label>
             <Input {...register("developer")} className="h-12" />
+            {errors.developer && <p className="text-destructive text-xs">{errors.developer.message}</p>}
           </div>
         </div>
 
@@ -383,6 +397,7 @@ const EditPropertyPage = () => {
               ))}
             </SelectContent>
           </Select>
+          {errors.district && <p className="text-destructive text-xs">{errors.district.message}</p>}
         </div>
 
         {/* Amenities (Multi-Select) */}
@@ -394,6 +409,7 @@ const EditPropertyPage = () => {
             onChange={(vals) => setValue("amenities", vals.map(String))}
             error={errors.amenities?.message}
           />
+          {errors.amenities && <p className="text-destructive text-xs">{errors.amenities.message}</p>}
         </div>
 
         <Button type="submit" disabled={loading} className="w-full md:w-fit px-10 shadow-xl">

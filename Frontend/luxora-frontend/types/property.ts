@@ -14,6 +14,8 @@ interface PropertyDetails {
     construction_status: string;
     build_year: string;
     publishedAt?: string | null;
+    is_approved?: "pending" | "approved" | "rejected";
+    is_approved_copy?: boolean;
     featured_image: {
         url: string;
         name: string;
@@ -66,6 +68,15 @@ interface PropertyDetails {
         id: number;
         username: string;
         phone: string;
+        bio: string;
+        social_links: {
+            whatsapp: string;
+            telegram: string;
+            instagram: string;
+            facebook: string;
+            twitter: string;
+            linkedin: string;
+        },
         avatar: {
             url: string;
             caption: string;

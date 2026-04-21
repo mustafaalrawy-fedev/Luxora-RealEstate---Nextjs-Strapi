@@ -64,7 +64,6 @@ const AgentPropertiesPage = () => {
     // Smooth scroll to the top of the properties grid
     window.scrollTo({ top: 400, behavior: 'smooth' })
   }
-
   if (isLoading) return <div className="p-10 text-center">Loading your properties...</div>;
 
   console.log({properties});
@@ -96,12 +95,15 @@ const AgentPropertiesPage = () => {
       </div>
 
       {/* Properties List */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className={"grid grid-cols-1 gap-4 border-border"}>
         {properties.length > 0 ? (
           properties.map((property: PropertyDetails) => (
             <div 
               key={property.id} 
-              className="group bg-card border rounded-2xl p-4 flex flex-col md:flex-row items-center gap-6 hover:shadow-lg transition-all"
+              className={cn(
+                "group bg-card border rounded-2xl p-4 flex flex-col md:flex-row items-center gap-6 hover:shadow-lg transition-all", 
+                property.is_approved === "pending" ? "border-warning bg-warning/5": property.is_approved === "approved" ? "border-success bg-success/5" : "border-error bg-error/5"
+              )}
             >
               {/* Image Thumbnail */}
               <div className="relative w-full md:w-40 h-28 rounded-xl overflow-hidden bg-muted">
@@ -125,6 +127,18 @@ const AgentPropertiesPage = () => {
                   <Badge variant={property.property_status === 'Sale' ? 'default' : 'secondary'}>
                     {property.property_status}
                   </Badge>
+                  <div>
+                    {property?.is_approved === "pending" ? (
+                      <div className="flex items-center gap-2">
+                        <Badge variant="pending">Pending</Badge>
+                        {/* {property?.rejection_reason && <span className="text-destructive">{property?.rejection_reason}</span>} */}
+                      </div>
+                    ) : property?.is_approved === "approved" ? (
+                      <Badge variant="success">Approved</Badge>
+                    ) : (
+                      <Badge variant="destructive">Rejected</Badge>
+                    )}
+                  </div>
                 </div>
                 <p className="text-sm text-muted-foreground line-clamp-1">{property.short_description}</p>
                 <p className={cn("font-bold text-primary", property.property_status === 'Rent' && 'text-secondary')}>{formatCurrency(property.price)}</p>

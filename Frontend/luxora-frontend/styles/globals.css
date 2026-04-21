@@ -164,8 +164,8 @@
 
   /* --- Status Indicators --- */
   /* Warning */
-  --warning: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
-  --warning-foreground: oklch(0.205 0.45 346.018); /* Text on top of warning */
+  --warning: #e3ca21;    /* Yellowish/Orange */
+  --warning-foreground: #8c6c14; /* Text on top of warning */
 
   /* Info */
   --info: oklch(0.656 0.241 205.018);    /* Blueish */
@@ -236,8 +236,8 @@
 
   /* --- Status Indicators --- */
   /* Warning */
-  --warning: oklch(0.823 0.12 346.018);    /* Yellowish/Orange */
-  --warning-foreground: oklch(0.205 0.45 346.018); /* Text on top of warning */
+  --warning: #e3ca21;    /* Yellowish/Orange */
+  --warning-foreground: #8c6c14; /* Text on top of warning */
 
   /* Info */
   --info: oklch(0.656 0.241 205.018);    /* Blueish */

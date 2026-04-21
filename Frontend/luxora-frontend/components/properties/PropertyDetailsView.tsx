@@ -13,8 +13,11 @@ import { cn } from '@/lib/utils'
 import { PropertiesSkeleton } from '../shared/LoadingState'
 import ErrorState from '../shared/ErrorState'
 import InquiryForm from '../forms/InquiryForm'
+import useAgentModalInfoStore from '@/store/useAgentModalInfoStore'
+import AgentModalInfo from "../shared/AgentModalInfo";
 
 export default function PropertyDetailsView({ slug }: { slug: string }) {
+    const { setAgentModalOpen, agentModalOpen, setAgentSocialLinks, setAgentModalClose, agentSocialLinks } = useAgentModalInfoStore()
     
     const query = qs.stringify({
     filters: {
@@ -188,7 +191,18 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
                             </div>
                         </div>
 
-                        <Button className={cn("w-full py-6 text-lg gap-2 hover:gap-4 transition-all", property_status === 'Rent' && "bg-secondary hover:bg-secondary/80")}>
+                        <Button  onClick={() => {
+                            setAgentModalOpen(); 
+                            setAgentSocialLinks({
+                                agent: {
+                                    username: agent?.username || '', 
+                                    avatar: {url: `${process.env.NEXT_PUBLIC_STRAPI_URL}${agent?.avatar?.url}` || ''}, 
+                                    bio: agent?.bio || ''
+                                },
+                                whatsapp: agent?.phone || '', 
+                                links: agent?.social_links || {facebook: '', instagram: '', twitter: '', linkedin: ''}
+                            })
+                        }} className={cn("w-full gap-2 hover:gap-4 transition-all", property_status === 'Rent' && "bg-secondary hover:bg-secondary/80")}>
                             Have Questions? <ArrowRight size={20} />
                         </Button>
                     </div>
@@ -197,6 +211,7 @@ export default function PropertyDetailsView({ slug }: { slug: string }) {
         </section>
     </div>
     <InquiryForm propertyId={id} agentId={agent?.id} />
+    {agentModalOpen && <AgentModalInfo setAgentModalClose={setAgentModalClose} agentSocialLinks={agentSocialLinks} />}
     </>
   )
 }

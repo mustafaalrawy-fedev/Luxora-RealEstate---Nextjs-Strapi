@@ -70,3 +70,20 @@ export const BATHROOMS_OPTIONS = [
   { id: 5, label: "5 Bathrooms", value: "5", operator: "$eq" },
   { id: 6, label: "6+ Bathrooms", value: "6", operator: "$gte" },
 ]
+
+export const FAQS = [
+    { question: "How do you verify your luxury listings?", answer: "Every property goes through a rigorous 5-step verification process. This includes title deed verification, physical inspection by our expert agents, and cross-referencing with official land registry databases to ensure 100% accuracy and ownership security." },
+    { question: "Can I schedule a 3D virtual tour?", answer: "Yes! Most of our premium listings feature high-fidelity 3D virtual tours powered by Spline and Rive. You can explore these properties from anywhere in the world at your own convenience." },
+    { question: "Do you offer property management for investors?", answer: "Absolutely. We partner with elite property management firms across the MENA region to offer comprehensive services, including tenant screening, rent collection, and maintenance, ensuring your investment is always protected and profitable." },
+    { question: "What are the fees for agents on your platform?", answer: "We operate on a transparent, tiered subscription model. Agents can choose the plan that best suits their needs, with access to premium features like AI-driven lead generation and advanced CRM tools. Please visit our 'For Agents' page for detailed pricing." }
+  ];
+
+export const SPONSORS = [
+    {name:"EMMAR", image:""}, 
+    {name:"DAMAC", image:""}, 
+    {name:"SOBHA REALTY", image:""}, 
+    {name:"MERAAS", image:""}, 
+    {name:"ALDAR", image:""}, 
+    {name:"NAKHEEL", image:""}, 
+    {name:"OMNIYAT", image:""}
+  ];

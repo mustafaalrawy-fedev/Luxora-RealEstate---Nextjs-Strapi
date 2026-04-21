@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-04-19T12:49:08.142Z"
+    "x-generation-date": "2026-04-20T18:09:40.127Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -18249,6 +18249,17 @@
                 "featured": {
                   "type": "boolean"
                 },
+                "is_approved_copy": {
+                  "type": "boolean"
+                },
+                "is_approved": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "approved",
+                    "rejected"
+                  ]
+                },
                 "agent": {
                   "type": "object",
                   "properties": {
@@ -22478,6 +22489,17 @@
               "featured": {
                 "type": "boolean"
               },
+              "is_approved_copy": {
+                "type": "boolean"
+              },
+              "is_approved": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "approved",
+                  "rejected"
+                ]
+              },
               "agent": {
                 "type": "object",
                 "properties": {
@@ -24065,6 +24087,17 @@
               },
               "featured": {
                 "type": "boolean"
+              },
+              "is_approved_copy": {
+                "type": "boolean"
+              },
+              "is_approved": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "approved",
+                  "rejected"
+                ]
               },
               "agent": {
                 "oneOf": [
@@ -26548,6 +26581,17 @@
                     "featured": {
                       "type": "boolean"
                     },
+                    "is_approved_copy": {
+                      "type": "boolean"
+                    },
+                    "is_approved": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "approved",
+                        "rejected"
+                      ]
+                    },
                     "agent": {
                       "type": "object",
                       "properties": {
@@ -27304,6 +27348,17 @@
           },
           "featured": {
             "type": "boolean"
+          },
+          "is_approved_copy": {
+            "type": "boolean"
+          },
+          "is_approved": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected"
+            ]
           },
           "agent": {
             "type": "object",

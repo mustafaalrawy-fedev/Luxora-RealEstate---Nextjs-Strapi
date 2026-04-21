@@ -37,6 +37,9 @@ export const propertySchema = z.object({
   // NOTE: featured_image, gallery, and media are managed as File state
   // outside of RHF and are handled separately in onSubmit — they are
   // intentionally NOT in this schema to avoid silent validation failures.
+  
+  is_approved: z.enum(["pending", "approved", "rejected"]).default("pending"),
+  // is_approved_copy: z.boolean().optional().default(false),
 });
 
 export type PropertyValues = z.infer<typeof propertySchema>;

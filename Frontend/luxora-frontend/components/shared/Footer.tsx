@@ -16,7 +16,7 @@ const Footer = () => {
             <div className="flex justify-start items-start flex-col gap-2 w-max">
                 <h6 className="font-bold text-lg text-muted-foreground">Contact</h6>
                 <ul className="flex flex-col gap-2">
-                    <li><Link href="mailto:mustafaalrawy@gmail.com">electus1@gmail.com</Link></li>
+                    <li><Link href="mailto:mustafaalrawyfedev@gmail.com">mustafaalrawyfedev@gmail.com</Link></li>
                     <li><Link href="tel:+201030037976">+20 103 003 7976</Link></li>
                 </ul>
             </div>

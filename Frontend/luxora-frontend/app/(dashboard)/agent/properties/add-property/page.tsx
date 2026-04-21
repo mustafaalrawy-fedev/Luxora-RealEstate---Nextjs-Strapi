@@ -67,6 +67,8 @@ const AddPropertyPage = () => {
       build_year: "",
       developer: "",
       district: "", 
+      is_approved: "pending",
+      // is_approved_copy: "pending",
     },
   });
 
@@ -220,6 +222,8 @@ const AddPropertyPage = () => {
             media:          mediaIds,
 
             publishedAt: null,
+            is_approved: data.is_approved,
+            // is_approved_copy: data.is_approved_copy,
           },
         }),
       });
@@ -231,7 +235,9 @@ const AddPropertyPage = () => {
         throw new Error(propertyJson?.error?.message ?? `Property creation failed (${propertyRes.status})`);
       }
 
-      toast.success("Property published successfully!");
+      // toast.success("Property published successfully!");
+      toast.success("Property published successfully! Will be visible after admin approval!");
+      
       router.push("/agent/properties");
       router.refresh();
 
@@ -262,6 +268,8 @@ const AddPropertyPage = () => {
 
         <input type="hidden" {...register("property_type")} />
         <input type="hidden" {...register("agent")} />
+        <input type="hidden" {...register("is_approved")} />
+        {/* <input type="hidden" {...register("is_approved_copy")} /> */}
 
         {/* ── Featured Image ─────────────────────────────────────────────── */}
         <div className="space-y-2">

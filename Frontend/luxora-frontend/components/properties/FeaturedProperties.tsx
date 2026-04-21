@@ -21,12 +21,14 @@ export default function FeaturedProperties () {
       featured_image: { populate: "*" },
       district: { populate: { city: { populate: "country" } } },
       property_type: { populate: "*" },
+      agent: { populate: {properties: false, avatar: {populate: "*"} } },
     },
     filters: {
       featured: { $eq: true },
+      is_approved: { $eq: "approved" },
     },
     pagination: {
-      limit: 6,
+      limit: 3,
     },
     sort: 'createdAt:desc',
   }, {encodeValuesOnly: true})
@@ -37,12 +39,14 @@ export default function FeaturedProperties () {
             const res = await axiosInstance.get(`/properties?${query}`) // featured properties
             return res.data.data
         },
-        staleTime: 5 * 60 * 1000,
-        gcTime: 10 * 60 * 1000,
+        staleTime: 0,
+        gcTime: 0,
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
+        refetchInterval: 10000,
     })
 
-    // if (isLoading) return <div>Loading...</div>
-    // if (error) return <div>Error...</div>
+    // console.log(data)
 
   return (
     <section className="container-space py-20 h-fit">
@@ -63,22 +67,3 @@ export default function FeaturedProperties () {
     </section>
   )
 }
-/*
-=============================================
-End Featured Properties Component
-=============================================
-*/
-
-
-
-/*
-=============================================
-Start Property Card Component
-=============================================
-*/
-
-/*
-=============================================
-End Property Card Component
-=============================================
-*/

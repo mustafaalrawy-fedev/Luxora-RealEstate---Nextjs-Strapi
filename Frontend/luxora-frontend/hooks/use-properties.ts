@@ -75,7 +75,7 @@ const finalPrice = (operator === '$between' && price)
       featured_image: { populate: "*" },
       district: { populate: { city: { populate: { country: true } } } },
       property_type: { populate: "*" },
-      agent: { populate: { properties: { populate: "*" } } },
+      agent: { populate: { properties: { populate: "*" }, avatar: {populate: "*"} } },
     },
     pagination: {
       page: currentPage,   // ← now always a number, never a mix of string/number
@@ -94,6 +94,8 @@ const finalPrice = (operator === '$between' && price)
             country: { slug: country ? { $eq: country } : undefined },
           },
         },
+        // is_approved: { $eq: true },
+        is_approved: { $eq: "approved" },
       }),
     },
     sort: 'createdAt:desc',

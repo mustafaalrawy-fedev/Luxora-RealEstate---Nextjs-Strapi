@@ -191,6 +191,29 @@
       "required": false,
       "default": false
     },
+    "is_approved_copy": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
+    },
+    "is_approved": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": "pending",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ]
+    },
     "agent": {
       "type": "relation",
       "relation": "manyToOne",
