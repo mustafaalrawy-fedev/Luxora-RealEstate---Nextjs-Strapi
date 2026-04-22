@@ -45,6 +45,14 @@
       "relation": "oneToMany",
       "target": "api::property.property",
       "mappedBy": "district"
+    },
+    "coordinates": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

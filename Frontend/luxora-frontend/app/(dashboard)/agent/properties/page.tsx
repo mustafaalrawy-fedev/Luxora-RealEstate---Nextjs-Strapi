@@ -1,176 +1,232 @@
-"use client"
+"use client";
 
-import PropertyDetails from "@/types/property";
+import { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "motion/react";
+import { Edit, Trash2, Plus, Home, Info } from "lucide-react";
+
+// Components & UI
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Trash2, Plus, Home } from "lucide-react";
-import Link from "next/link";
-import { formatCurrency } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import PropertyPagination from "@/components/properties/PropertyPagination";
-import qs from "qs";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import axiosInstance from "@/lib/axios";
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { cn } from "@/lib/utils";
+import DeletePropertyModal from "@/components/dashboard/shared/DeletePropertyModal";
+import AvailabilityStatusToggle from "@/components/dashboard/stats/AvailabilityStatusToggle";
+import PropertyFilter from "@/components/properties/PropertyFilter";
+
+// Hooks & Utils
+import PropertyDetails from "@/types/property";
+import { formatCurrency, cn } from "@/lib/utils";
+import { useAgentProperties } from "@/hooks/use-agent-properties";
+import usePropertyAvailableStatusUpdate from "@/hooks/use-property-avaliable-status-update";
+
+// Motion Variants
+import { containerVariants, itemVariants } from "@/components/motion";
+import { AgentPropertiesSkeleton } from "@/components/shared/LoadingState";
 
 const AgentPropertiesPage = () => {
+  const [open, setOpen] = useState(false);
+  const [propertyId, setPropertyId] = useState<string | null>(null);
 
-  const searchParams = useSearchParams();
+  const { 
+    properties, 
+    isLoading, 
+    totalPages, 
+    currentPage, 
+    handlePageChange 
+  } = useAgentProperties({ filter: true });
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const page = searchParams.get('page') || currentPage
-  const pageSize = 5
-
-  const {data: session} = useSession();
-  const profile = session?.user;
-
-  const query = qs.stringify({
-    populate: "*",
-    pagination: {
-      page: currentPage,
-      pageSize: pageSize,
-    },
-    filters: {
-      agent: {
-        id: profile?.id,
-      },
-    },
-    sort: 'createdAt:desc',
-  }, {encodeValuesOnly: true})
-
-  const {data, isLoading} = useQuery({
-    queryKey: ["agent-properties", page, profile?.id],
-    queryFn: async() => {
-        const res = await axiosInstance.get(`/properties?${query}`) // All properties
-        return res.data
-    },
-    enabled: !!profile?.id,
-    staleTime: 0,
-    gcTime: 0,
-    // refetchInterval: 5 * 60 * 1000,
-    refetchOnWindowFocus: true, // Refetch when the user switches tabs back to your app
-    refetchOnMount: true,       // Refetch every time the component loads
-    })
-
-    const properties = data?.data
-    const meta = data?.meta?.pagination
-    const totalPages = meta?.pageCount || 1
-
-    const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage)
-    // Smooth scroll to the top of the properties grid
-    window.scrollTo({ top: 400, behavior: 'smooth' })
-  }
-  if (isLoading) return <div className="p-10 text-center">Loading your properties...</div>;
-
-  console.log({properties});
+  const { updateStatus, isPending } = usePropertyAvailableStatusUpdate();
 
   return (
     <section className="space-y-8">
       {/* Header Section */}
-      <div className="flex justify-between items-center">
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="flex justify-between items-center"
+      >
         <div>
-          <h1 className="text-3xl font-bold">My Properties</h1>
+          <h1 className="text-3xl font-bold tracking-tight">My Properties</h1>
           <p className="text-muted-foreground">Manage and track all your listed properties</p>
         </div>
-        <Button asChild className="gap-2">
+        <Button asChild className="gap-2 shadow-md hover:shadow-lg transition-all active:scale-95">
           <Link href="/agent/properties/add-property">
             <Plus size={18} /> Add Property
           </Link>
         </Button>
-      </div>
+      </motion.div>
 
-      {/* Stats Quick View (Optional) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-card p-6 rounded-2xl border flex items-center gap-4">
+      {/* Stats Quick View */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+      >
+        <div className="bg-card p-6 rounded-2xl border flex items-center gap-4 shadow-sm">
           <div className="p-3 bg-primary/10 rounded-xl text-primary"><Home size={24}/></div>
           <div>
-            <p className="text-sm text-muted-foreground">Total Listings</p>
-            <h3 className="text-2xl font-bold">{properties.length}</h3>
+            <p className="text-sm text-muted-foreground font-medium">Total Listings</p>
+            <h3 className="text-2xl font-bold">{properties?.length}</h3>
           </div>
         </div>
+      </motion.div>
+
+      <div className="w-full">
+        <PropertyFilter status={true} type={true} price={false} location={true} rooms={false}/>
       </div>
 
       {/* Properties List */}
-      <div className={"grid grid-cols-1 gap-4 border-border"}>
-        {properties.length > 0 ? (
-          properties.map((property: PropertyDetails) => (
-            <div 
-              key={property.id} 
-              className={cn(
-                "group bg-card border rounded-2xl p-4 flex flex-col md:flex-row items-center gap-6 hover:shadow-lg transition-all", 
-                property.is_approved === "pending" ? "border-warning bg-warning/5": property.is_approved === "approved" ? "border-success bg-success/5" : "border-error bg-error/5"
-              )}
-            >
-              {/* Image Thumbnail */}
-              <div className="relative w-full md:w-40 h-28 rounded-xl overflow-hidden bg-muted">
-                {property.featured_image?.url ? (
-                  <Image 
-                    src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${property.featured_image.url}`} 
-                    alt={property.property_name}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full"><Home className="text-muted-foreground" /></div>
+      {isLoading ? (
+        <AgentPropertiesSkeleton count={5} />
+      ) : (
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-1 gap-4"
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          {properties?.length > 0 ? (
+            properties.map((property: PropertyDetails) => (
+              <motion.div
+                key={property.id}
+                layout
+                variants={itemVariants}
+                className={cn(
+                  "group bg-card border rounded-2xl p-4 flex flex-col md:flex-row items-center gap-6 hover:shadow-md transition-shadow", 
+                  property.is_approved === "pending" ? "border-warning/25 bg-warning/5" : 
+                  property.is_approved === "approved" ? "border-success/25 bg-success/5" : 
+                  "border-destructive/25 bg-destructive/5"
                 )}
-              </div>
+              >
+                {/* Image Thumbnail */}
+                <div className="relative w-full md:w-40 h-28 rounded-xl overflow-hidden bg-muted group-hover:ring-2 ring-primary/20 transition-all">
+                  {property.featured_image?.url ? (
+                    <Image 
+                      src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${property.featured_image.url}`} 
+                      alt={property.property_name ?? "Property"}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full bg-secondary/20 text-muted-foreground"><Home /></div>
+                  )}
+                </div>
 
-              {/* Basic Info */}
-              <div className="flex-1 space-y-1 text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-2">
-                  <h3 className="font-bold text-lg">{property.property_name}</h3>
-                  <Badge variant={property.property_status === 'Sale' ? 'default' : 'secondary'}>
-                    {property.property_status}
-                  </Badge>
-                  <div>
-                    {property?.is_approved === "pending" ? (
-                      <div className="flex items-center gap-2">
-                        <Badge variant="pending">Pending</Badge>
-                        {/* {property?.rejection_reason && <span className="text-destructive">{property?.rejection_reason}</span>} */}
-                      </div>
-                    ) : property?.is_approved === "approved" ? (
-                      <Badge variant="success">Approved</Badge>
-                    ) : (
-                      <Badge variant="destructive">Rejected</Badge>
+                {/* Info Section */}
+                <div className="flex-1 space-y-1 text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
+                    <h3 className="font-bold text-lg leading-tight">{property.property_name}</h3>
+                    <Badge variant={property.property_status === 'Sale' ? 'default' : 'secondary'} className="rounded-full px-3">
+                      {property.property_status}
+                    </Badge>
+                    
+                    <Badge 
+                      variant="outline" 
+                      className={cn(
+                        "rounded-full",
+                        property.is_approved === "approved" && "bg-success/20 text-success border-success/80",
+                        property.is_approved === "pending" && "bg-warning/20 text-warning border-warning/80",
+                        property.is_approved === "rejected" && "bg-destructive/20 text-destructive border-destructive/80"
+                      )}
+                    >
+                      {property.is_approved}
+                    </Badge>
+
+                    {property.is_approved === "rejected" && (
+                      <Tooltip>
+                        <TooltipTrigger asChild> 
+                          <Info size={16} className="text-destructive animate-pulse cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-[200px] bg-destructive text-destructive-foreground">
+                          <p className="text-xs">{property.rejected_message}</p>
+                        </TooltipContent>
+                      </Tooltip>
                     )}
                   </div>
+                  
+                  <p className="text-sm text-muted-foreground line-clamp-1 italic">{property.short_description}</p>
+                  <p className={cn("font-bold text-lg text-primary", property.property_status === 'Rent' && 'text-secondary')}>
+                    {formatCurrency(property.price)}
+                  </p>
+                  
+                  {property.is_approved === "approved" && (
+                    <div className="mt-2 flex justify-center md:justify-start">
+                      <AvailabilityStatusToggle 
+                        property={property} 
+                        isUpdating={isPending} 
+                        onUpdate={(documentId, status) => updateStatus({documentId, newStatus: status})} 
+                      />
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm text-muted-foreground line-clamp-1">{property.short_description}</p>
-                <p className={cn("font-bold text-primary", property.property_status === 'Rent' && 'text-secondary')}>{formatCurrency(property.price)}</p>
-              </div>
 
-              {/* Actions */}
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" asChild>
-                  <Link href={`/agent/properties/${property.slug}/edit-property`}>
-                    <Edit size={16} />
-                  </Link>
-                </Button>
-                <Button variant="outline" size="icon" className="text-destructive hover:bg-destructive/10">
-                  <Trash2 size={16} />
-                </Button>
-                <Button variant="outline" asChild>
-                   <Link href={`/properties/${property.slug}`}>View Details</Link>
-                </Button>
+                {/* Actions Section */}
+                <div className="flex items-center gap-3 bg-muted/30 p-2 rounded-xl md:bg-transparent">
+                  <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 hover:text-primary rounded-full transition-colors">
+                    <Link href={`/agent/properties/${property.slug}/edit-property`}>
+                      <Edit size={18} />
+                    </Link>
+                  </Button>
+                  
+                  <Button 
+                    onClick={() => {setOpen(true); setPropertyId(property.documentId)}} 
+                    variant="ghost" 
+                    size="icon" 
+                    className="text-destructive hover:bg-destructive/10 rounded-full transition-colors"
+                  >
+                    <Trash2 size={18} />
+                  </Button>
+                  
+                  <Button variant="outline" asChild className="rounded-full text-xs font-semibold shadow-sm border-2 hover:border-foreground transition-all">
+                     <Link href={`/properties/${property.slug}`}>View</Link>
+                  </Button>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <motion.div 
+              key="empty-state"
+              variants={itemVariants}
+              className="text-center py-20 border-2 border-dashed border-muted-foreground/20 rounded-3xl bg-muted/5"
+            >
+              <div className="bg-muted w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Home className="text-muted-foreground/50" size={32} />
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-20 border-2 border-dashed rounded-3xl">
-            <p className="text-muted-foreground">You haven&apos;t added any properties yet.</p>
-            <Button variant="link" asChild><Link href="/agent/properties/add-property">Start adding now</Link></Button>
-          </div>
-        )}
-      </div>
+              <p className="text-muted-foreground font-medium">You haven&apos;t added any properties yet.</p>
+              <Button variant="link" asChild className="text-primary font-bold">
+                <Link href="/agent/properties/add-property">Start adding now</Link>
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+      )}
+
+      {/* Delete Modal */}
+      {open && (
+        <DeletePropertyModal open={open} setOpen={setOpen} propertyId={propertyId} />
+      )}
+
       {/* Pagination */}
-      <PropertyPagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} className="justify-end" />
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <PropertyPagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          handlePageChange={handlePageChange} 
+          className="justify-end pt-4" 
+        />
+      </motion.div>
     </section>
-  )
+  );
 }
 
 export default AgentPropertiesPage;

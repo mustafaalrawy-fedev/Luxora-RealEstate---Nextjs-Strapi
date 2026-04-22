@@ -2,33 +2,14 @@
 
 import { 
   LayoutDashboard, 
-  Home, 
   Plus, 
-  Eye, 
-  MessageSquare, 
-  TrendingUp, 
-  Clock,
-  ArrowUpRight
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PerformanceChart from "@/components/dashboard/shared/PerformanceCharts";
+import DashboardStats from "@/components/dashboard/stats/DashboardStats";
 
 const AgentDashboardPage = () => {
-  // These would typically come from your useQuery hooks
-  const stats = [
-    { label: "Active Listings", value: "12", icon: Home, trend: "+2 this month" },
-    { label: "Total Views", value: "1.2k", icon: Eye, trend: "+15% vs last week" },
-    { label: "New Inquiries", value: "8", icon: MessageSquare, trend: "4 urgent" },
-    { label: "Market Growth", value: "4.2%", icon: TrendingUp, trend: "Cairo North" },
-  ];
-
-  // const recentActivities = [
-  //   { id: 1, action: "New Inquiry", target: "Zayed Regency Villa", time: "2 mins ago" },
-  //   { id: 2, action: "Property Edited", target: "New Cairo Apartment", time: "1 hour ago" },
-  //   { id: 3, action: "Listing Published", target: "Suez Beach House", time: "5 hours ago" },
-  // ];
 
   return (
     <div className="p-6 space-y-8 max-w-7xl mx-auto">
@@ -48,23 +29,7 @@ const AgentDashboardPage = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, i) => (
-          <Card key={i} className="border-none shadow-sm bg-card/50 backdrop-blur-md">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
-              <stat.icon className="h-4 w-4 text-primary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground mt-1 flex items-center">
-                <ArrowUpRight className="mr-1 h-3 w-3 text-emerald-500" />
-                {stat.trend}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <DashboardStats />
 
       {/* <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7"> */}
       <div className="grid gap-6 grid-cols-1">

@@ -106,6 +106,7 @@ const PerformanceChart = () => {
       </CardHeader>
       <CardContent>
         <div className="h-[300px] w-full pt-4">
+          {/* <ResponsiveContainer width="100%" height="100%" minWidth={100} minHeight={100} aspect={0}> */}
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>

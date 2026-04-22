@@ -776,6 +776,12 @@ export interface ApiDistrictDistrict extends Struct.CollectionTypeSchema {
   };
   attributes: {
     city: Schema.Attribute.Relation<'oneToOne', 'api::city.city'>;
+    coordinates: Schema.Attribute.JSON &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1018,6 +1024,15 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    availability_status: Schema.Attribute.Enumeration<
+      ['Available', 'Sold', 'Rented', 'Off-plan']
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'Available'>;
     bathroom: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1091,13 +1106,6 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'pending'>;
-    is_approved_copy: Schema.Attribute.Boolean &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1144,6 +1152,12 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
       'api::property-type.property-type'
     >;
     publishedAt: Schema.Attribute.DateTime;
+    rejected_message: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     short_description: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{

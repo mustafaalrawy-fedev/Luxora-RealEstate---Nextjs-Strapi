@@ -92,6 +92,7 @@ const EditPropertyPage = () => {
         amenities: property.amenities?.map((a: {documentId: string}) => a.documentId) || [],
         agent: property.agent?.documentId,
         is_approved: property.is_approved,
+        availability_status: property.availability_status,
       });
 
       if (property.featured_image) setPreviewImage(`${process.env.NEXT_PUBLIC_STRAPI_URL}${property.featured_image.url}`);
@@ -137,7 +138,7 @@ const EditPropertyPage = () => {
 
   const { data: districts } = useQuery({
     queryKey: ["districts"],
-    queryFn: async () => (await axiosInstance.get("/districts")).data.data,
+    queryFn: async () => (await axiosInstance.get("/districts?populate[city][populate]=country&sort=district_name:asc")).data.data,
   });
 
   // ── 5. Submit (PUT Request) ─────────────────────────────────────────────────
@@ -253,6 +254,7 @@ const EditPropertyPage = () => {
               </label>
             )}
           </div>
+          {imageError && <p className="text-destructive text-sm">{imageError}</p>}
         </div>
 
         {/* Gallery */}
@@ -278,9 +280,10 @@ const EditPropertyPage = () => {
               <input type="file" multiple className="hidden" accept="image/*" onChange={handleGalleryChange} />
             </label>
           </div>
+          {mediaError && <p className="text-destructive text-sm">{mediaError}</p>}
         </div>
 
-        {/* Title & Slug */}
+        {/* ── Title & Slug ─────────────────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-semibold">Property Title</label>
@@ -293,7 +296,7 @@ const EditPropertyPage = () => {
           </div>
         </div>
 
-        {/* Status, Price, Area */}
+        {/* ── Status, Price, Area ─────────────────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-semibold">Listing Status</label>
@@ -318,7 +321,24 @@ const EditPropertyPage = () => {
           </div>
         </div>
 
-        {/* Descriptions */}
+        {/* ── Availability Status ─────────────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold">Availability Status</label>
+            <Select value={watch("availability_status")} onValueChange={(v) => setValue("availability_status", v as "Available" | "Sold" | "Rented" | "Off-plan")}>
+              <SelectTrigger className="h-12 w-full" size="lg" ><SelectValue placeholder="Select Status" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Available">Available</SelectItem>
+                <SelectItem value="Sold">Sold</SelectItem>
+                <SelectItem value="Rented">Rented</SelectItem>
+                <SelectItem value="Off-plan">Off-plan</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.availability_status && <p className="text-destructive text-xs">{errors.availability_status.message}</p>}
+          </div>
+        </div>
+
+        {/* ── Descriptions ─────────────────────────────────────────────────── */}
         <div className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-semibold">Short Description</label>
@@ -332,7 +352,7 @@ const EditPropertyPage = () => {
           </div>
         </div>
 
-        {/* Type, Bedrooms, Bathrooms */}
+        {/* ── Type, Bedrooms, Bathrooms ─────────────────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-semibold">Property Type</label>
@@ -358,7 +378,7 @@ const EditPropertyPage = () => {
           </div>
         </div>
 
-        {/* Construction, Build Year, Developer */}
+        {/* ── Construction, Build Year, Developer ─────────────────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t pt-8">
           <div className="space-y-2">
             <label className="text-sm font-semibold">Construction Status</label>
@@ -386,7 +406,7 @@ const EditPropertyPage = () => {
           </div>
         </div>
 
-        {/* District Selection */}
+        {/* ── District Selection ─────────────────────────────────────────────────── */}
         <div className="space-y-2">
           <label className="text-sm font-semibold">District</label>
           <Select value={watch("district")} onValueChange={(v) => setValue("district", v)}>
@@ -400,7 +420,7 @@ const EditPropertyPage = () => {
           {errors.district && <p className="text-destructive text-xs">{errors.district.message}</p>}
         </div>
 
-        {/* Amenities (Multi-Select) */}
+        {/* ── Amenities (Multi-Select) ─────────────────────────────────────────────────── */}
         <div className="border-t pt-8">
           <SearchableMultiSelect
             label="Amenities"

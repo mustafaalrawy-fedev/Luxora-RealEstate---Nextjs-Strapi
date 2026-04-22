@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-04-20T18:09:40.127Z"
+    "x-generation-date": "2026-04-22T08:38:38.388Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -16238,6 +16238,7 @@
                   "example": "string or id"
                 }
               },
+              "coordinates": {},
               "locale": {
                 "type": "string"
               },
@@ -17856,6 +17857,7 @@
                         }
                       }
                     },
+                    "coordinates": {},
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -18249,9 +18251,6 @@
                 "featured": {
                   "type": "boolean"
                 },
-                "is_approved_copy": {
-                  "type": "boolean"
-                },
                 "is_approved": {
                   "type": "string",
                   "enum": [
@@ -18259,6 +18258,9 @@
                     "approved",
                     "rejected"
                   ]
+                },
+                "rejected_message": {
+                  "type": "string"
                 },
                 "agent": {
                   "type": "object",
@@ -18812,6 +18814,15 @@
                 "developer": {
                   "type": "string"
                 },
+                "availability_status": {
+                  "type": "string",
+                  "enum": [
+                    "Available",
+                    "Sold",
+                    "Rented",
+                    "Off-plan"
+                  ]
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"
@@ -18887,6 +18898,7 @@
               }
             }
           },
+          "coordinates": {},
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -22096,6 +22108,7 @@
                       }
                     }
                   },
+                  "coordinates": {},
                   "createdAt": {
                     "type": "string",
                     "format": "date-time"
@@ -22489,9 +22502,6 @@
               "featured": {
                 "type": "boolean"
               },
-              "is_approved_copy": {
-                "type": "boolean"
-              },
               "is_approved": {
                 "type": "string",
                 "enum": [
@@ -22499,6 +22509,9 @@
                   "approved",
                   "rejected"
                 ]
+              },
+              "rejected_message": {
+                "type": "string"
               },
               "agent": {
                 "type": "object",
@@ -23051,6 +23064,15 @@
               },
               "developer": {
                 "type": "string"
+              },
+              "availability_status": {
+                "type": "string",
+                "enum": [
+                  "Available",
+                  "Sold",
+                  "Rented",
+                  "Off-plan"
+                ]
               },
               "createdAt": {
                 "type": "string",
@@ -24088,9 +24110,6 @@
               "featured": {
                 "type": "boolean"
               },
-              "is_approved_copy": {
-                "type": "boolean"
-              },
               "is_approved": {
                 "type": "string",
                 "enum": [
@@ -24098,6 +24117,9 @@
                   "approved",
                   "rejected"
                 ]
+              },
+              "rejected_message": {
+                "type": "string"
               },
               "agent": {
                 "oneOf": [
@@ -24112,6 +24134,15 @@
               },
               "developer": {
                 "type": "string"
+              },
+              "availability_status": {
+                "type": "string",
+                "enum": [
+                  "Available",
+                  "Sold",
+                  "Rented",
+                  "Off-plan"
+                ]
               },
               "locale": {
                 "type": "string"
@@ -26581,9 +26612,6 @@
                     "featured": {
                       "type": "boolean"
                     },
-                    "is_approved_copy": {
-                      "type": "boolean"
-                    },
                     "is_approved": {
                       "type": "string",
                       "enum": [
@@ -26591,6 +26619,9 @@
                         "approved",
                         "rejected"
                       ]
+                    },
+                    "rejected_message": {
+                      "type": "string"
                     },
                     "agent": {
                       "type": "object",
@@ -27144,6 +27175,15 @@
                     "developer": {
                       "type": "string"
                     },
+                    "availability_status": {
+                      "type": "string",
+                      "enum": [
+                        "Available",
+                        "Sold",
+                        "Rented",
+                        "Off-plan"
+                      ]
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -27219,6 +27259,7 @@
                   }
                 }
               },
+              "coordinates": {},
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -27349,9 +27390,6 @@
           "featured": {
             "type": "boolean"
           },
-          "is_approved_copy": {
-            "type": "boolean"
-          },
           "is_approved": {
             "type": "string",
             "enum": [
@@ -27359,6 +27397,9 @@
               "approved",
               "rejected"
             ]
+          },
+          "rejected_message": {
+            "type": "string"
           },
           "agent": {
             "type": "object",
@@ -27380,6 +27421,15 @@
           },
           "developer": {
             "type": "string"
+          },
+          "availability_status": {
+            "type": "string",
+            "enum": [
+              "Available",
+              "Sold",
+              "Rented",
+              "Off-plan"
+            ]
           },
           "createdAt": {
             "type": "string",

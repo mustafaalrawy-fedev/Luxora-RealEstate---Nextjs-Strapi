@@ -14,7 +14,7 @@ export const propertySchema = z.object({
   bathroom:      z.string().min(1, "Bathrooms is required"),
 
   // ── Classification ─────────────────────────────────────────────────────────
-  property_status:      z.enum(["Sale", "Rent"]).default("Sale"),
+  property_status:      z.enum(["Sale", "Rent", ""]).default("Sale"),
   property_type:        z.string().min(1, "Please select a property type"),
   construction_status:  z.enum(["Finished", "Under Construction"]).optional(),
   build_year:           z.string().min(4, "Build year is required"),
@@ -40,6 +40,8 @@ export const propertySchema = z.object({
   
   is_approved: z.enum(["pending", "approved", "rejected"]).default("pending"),
   // is_approved_copy: z.boolean().optional().default(false),
+
+  availability_status: z.enum(["Available", "Sold", "Rented", "Off-plan"]).default("Available"),
 });
 
 export type PropertyValues = z.infer<typeof propertySchema>;

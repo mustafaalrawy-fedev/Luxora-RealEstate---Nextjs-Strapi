@@ -191,15 +191,6 @@
       "required": false,
       "default": false
     },
-    "is_approved_copy": {
-      "type": "boolean",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "default": false
-    },
     "is_approved": {
       "type": "enumeration",
       "pluginOptions": {
@@ -213,6 +204,14 @@
         "approved",
         "rejected"
       ]
+    },
+    "rejected_message": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "agent": {
       "type": "relation",
@@ -228,6 +227,22 @@
         }
       },
       "required": false
+    },
+    "availability_status": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": false,
+      "default": "Available",
+      "enum": [
+        "Available",
+        "Sold",
+        "Rented",
+        "Off-plan"
+      ]
     }
   }
 }

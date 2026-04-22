@@ -7,12 +7,12 @@ import axiosInstance from '@/lib/axios'
 import { BEDROOMS_OPTIONS, PRICE_OPTIONS, BATHROOMS_OPTIONS } from '@/constants'
 import FilterSelect from '../shared/FilterSelect'
 import { Filter } from 'lucide-react'
-import PropertyDetails from '@/types/property'
+// import PropertyDetails from '@/types/property'
 import { useFilterStore } from '@/store/useFilterStore'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '../ui/sheet'
 import { ScrollArea } from '../ui/scroll-area'
 
-const PropertyFilter = () => {
+const PropertyFilter = ({status = false, type = false, price = false, location = false, rooms = false }: {status?: boolean, type?: boolean, price?: boolean, location?: boolean, rooms?: boolean, bathrooms?: boolean}) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -46,9 +46,10 @@ function handleFilterChange(name: string, value: string) {
   const { data: propertyTypesData } = useQuery({
     queryKey: ['property-types'],
     queryFn: async() => {
-        const res = await axiosInstance.get(`/property-types`) // All properties
-        return res.data.data
+      const res = await axiosInstance.get(`/property-types`) // All properties
+      return res.data.data
     },
+    enabled: type,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   })
@@ -76,32 +77,51 @@ function handleFilterChange(name: string, value: string) {
       gcTime: 10 * 60 * 1000,
   })
 
+  // Fetch Districts
+  const currentCity = searchParams.get('city') as string | null;
+  const { data: districtsData } = useQuery({
+      queryKey: ['districts', currentCity],
+      queryFn: async() => {
+          const res = await axiosInstance.get(`/districts?filters[city][slug][$eq]=${currentCity}`) // districts by city
+          return res.data.data
+      },
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+  })
+
   return (
     <>
-    <div className='hidden lg:block w-full'>
+    {/* <div className='hidden lg:block w-full'> */}
+    <div className='w-full'>
       <DesktopFilter 
         searchParams={searchParams} 
         handleFilterChange={handleFilterChange} 
         handleClearFilters={handleClearFilters} 
         currentStatus={currentStatus} 
         currentCountry={currentCountry} 
+        currentCity={currentCity} 
         propertyTypesData={propertyTypesData} 
         citiesData={citiesData} 
         countriesData={countriesData} 
+        districtsData={districtsData} 
         PriceOptions={PriceOptions} 
         BEDROOMS_OPTIONS={BEDROOMS_OPTIONS} 
-        BATHROOMS_OPTIONS={BATHROOMS_OPTIONS} />
+        BATHROOMS_OPTIONS={BATHROOMS_OPTIONS}
+        propertyFilterControl={{status, type, location, rooms, price}} />
     </div>
-    <div className='lg:hidden w-full flex justify-end items-end'>
+    {/* <div className='lg:hidden w-full flex justify-end items-end'> */}
+    <div className='w-full flex justify-end items-end'>
       <MobileFilter 
         searchParams={searchParams} 
         handleFilterChange={handleFilterChange} 
         handleClearFilters={handleClearFilters} 
         currentStatus={currentStatus} 
         currentCountry={currentCountry} 
+        currentCity={currentCity} 
         propertyTypesData={propertyTypesData} 
         citiesData={citiesData} 
         countriesData={countriesData} 
+        districtsData={districtsData} 
         PriceOptions={PriceOptions} 
         BEDROOMS_OPTIONS={BEDROOMS_OPTIONS} 
         BATHROOMS_OPTIONS={BATHROOMS_OPTIONS} />
@@ -119,22 +139,29 @@ export function DesktopFilter ({
   handleClearFilters, 
   currentStatus, 
   currentCountry, 
+  currentCity, 
   propertyTypesData, 
   citiesData, 
-  countriesData, 
+  countriesData,
+  districtsData, 
   PriceOptions, 
   BEDROOMS_OPTIONS, 
+  propertyFilterControl,
   BATHROOMS_OPTIONS}: {searchParams: URLSearchParams, 
     handleFilterChange: (name: string, value: string) => void, 
     handleClearFilters: () => void, 
     currentStatus: string | null, 
     currentCountry: string | null, 
-    propertyTypesData: PropertyDetails, 
-    citiesData: PropertyDetails, 
-    countriesData: PropertyDetails, 
+    currentCity: string | null, 
+    propertyTypesData: {id: number, type_name: string, slug: string}[], 
+    citiesData: {id: number, city_name: string, slug: string}[], 
+    countriesData: {id: number, country_name: string, slug: string}[], 
+    districtsData: {id: number, district_name: string, slug: string}[], 
     PriceOptions: {id: number, value: string, label: string}[], 
     BEDROOMS_OPTIONS: {id: number, value: string, label: string}[], 
-    BATHROOMS_OPTIONS: {id: number, value: string, label: string}[]}) {
+    BATHROOMS_OPTIONS: {id: number, value: string, label: string}[], 
+    propertyFilterControl: {status: boolean, type: boolean, location: boolean, rooms: boolean, price: boolean}
+  }) {
   return (
     <aside className="w-full bg-card rounded-md p-8 shadow-xl border">
       {/* <div className="flex justify-between items-center flex-row gap-5"> */}
@@ -145,6 +172,7 @@ export function DesktopFilter ({
         = Start Status Filter = 
         ========================
         */}
+        {propertyFilterControl.status && (
         <FilterSelect
           label="Property Status"
           options={[
@@ -154,12 +182,14 @@ export function DesktopFilter ({
           value={searchParams.get("status") || ""}
           onValueChange={(value) => handleFilterChange("status", value)}
         />
+        )}
 
         {/* 
         ========================
         = Start Property Types Filter = 
         ========================
         */}
+        {propertyFilterControl.type && (
         <div className='w-full'>
           {/* <label htmlFor="property-types" className='block text-xs font-medium text-muted-foreground mb-2'>Property Types</label> */}
           <FilterSelect
@@ -173,12 +203,14 @@ export function DesktopFilter ({
             onValueChange={(value) => handleFilterChange("type", value)}
           />
         </div>
+        )}
 
         {/* 
         ========================
         = Start Country Filter = 
         ========================
         */}
+        {propertyFilterControl.location && (
           <FilterSelect
             label="Countries"
             options={countriesData?.map((country: {id: number, country_name: string, slug: string}) => ({
@@ -189,13 +221,14 @@ export function DesktopFilter ({
             value={searchParams.get("country") || ""}
             onValueChange={(value) => handleFilterChange("country", value)}
           />
+        )}
 
         {/* 
         ========================
         = Start Cities Filter = 
         ========================
         */}
-        { currentCountry && citiesData?.length > 0 && (
+        {currentCountry && citiesData?.length > 0 &&  (
           <FilterSelect
             label="Cities"
             options={citiesData?.map((city: {id: number, city_name: string, slug: string}) => ({
@@ -209,49 +242,51 @@ export function DesktopFilter ({
         )}
 
         {/* 
-        =========================
-        = Start Bedrooms Filter = 
-        =========================
+        ========================
+        = Start District Filter = 
+        ========================
         */}
+        {currentCity && districtsData?.length > 0 && (
         <FilterSelect
-          label="Beds"
-          // options={[
-          //   { id: 1, value: "2", label: "1+ Bedroom" },
-          //   { id: 2, value: "3", label: "2+ Bedrooms" },
-          //   { id: 3, value: "4", label: "3+ Bedrooms" },
-          //   { id: 4, value: "5", label: "4+ Bedrooms" },
-          //   { id: 5, value: "6", label: "5+ Bedrooms" },
-          // ]}
-          options={BEDROOMS_OPTIONS}
-          value={searchParams.get("bedrooms") || ""}
-          onValueChange={(value) => handleFilterChange("bedrooms", value)}
+          label="Districts"
+          options={districtsData?.map((district: {id: number, district_name: string, slug: string}) => ({
+            id: district.id,
+            value: district.slug,
+            label: district.district_name,
+          })) || []}
+          value={searchParams.get("district") || ""}
+          onValueChange={(value) => handleFilterChange("district", value)}
         />
+        )}
 
         {/* 
         =========================
-        = Start Bathroom Filter = 
+        = Start Rooms Filter = 
         =========================
         */}
-        <FilterSelect
-          label="Baths"
-          // options={[
-          //   { id: 1, value: "2", label: "1+ Bathroom" },
-          //   { id: 2, value: "3", label: "2+ Bathrooms" },
-          //   { id: 3, value: "4", label: "3+ Bathrooms" },
-          //   { id: 4, value: "5", label: "4+ Bathrooms" },
-          //   { id: 5, value: "6", label: "5+ Bathrooms" },
-          // ]}
-          options={BATHROOMS_OPTIONS}
-          value={searchParams.get("bathrooms") || ""}
-          onValueChange={(value) => handleFilterChange("bathrooms", value)}
-        />
+        {propertyFilterControl.rooms && (
+          <>
+            <FilterSelect
+              label="Beds"
+              options={BEDROOMS_OPTIONS}
+              value={searchParams.get("bedrooms") || ""}
+              onValueChange={(value) => handleFilterChange("bedrooms", value)}
+              />
+            <FilterSelect
+              label="Baths"
+              options={BATHROOMS_OPTIONS}
+              value={searchParams.get("bathrooms") || ""}
+              onValueChange={(value) => handleFilterChange("bathrooms", value)}
+              />
+          </>
+        )}
 
         {/* 
         ========================
         = Start Price Filter = 
         ========================
         */}
-        {currentStatus && 
+        {currentStatus && propertyFilterControl.price && 
         <FilterSelect
           label="Price"
           options={PriceOptions}
@@ -266,15 +301,15 @@ export function DesktopFilter ({
         ==================
         */}
         <div className='w-full'>
-      <Button 
-        onClick={handleClearFilters} 
-        variant={searchParams.size > 0 ? "destructive" : "outline"}
-        className='w-full'
-        disabled={searchParams.size === 0}
-      >
-        Clear Filters
-      </Button>
-      </div>
+          <Button 
+            onClick={handleClearFilters} 
+            variant={searchParams.size > 0 ? "destructive" : "outline"}
+            className='w-full'
+            disabled={searchParams.size === 0}
+          >
+            Clear Filters
+          </Button>
+        </div>
       </div>
     </aside>
   )
@@ -285,20 +320,24 @@ export function MobileFilter ({
   handleFilterChange, 
   handleClearFilters, 
   currentStatus, 
-  currentCountry, 
+  currentCountry,
+  currentCity,
   propertyTypesData, 
   citiesData, 
-  countriesData, 
+  countriesData,
+  districtsData, 
   PriceOptions, 
   BEDROOMS_OPTIONS, 
   BATHROOMS_OPTIONS}: {searchParams: URLSearchParams, 
     handleFilterChange: (name: string, value: string) => void, 
     handleClearFilters: () => void, 
     currentStatus: string | null, 
-    currentCountry: string | null, 
-    propertyTypesData: PropertyDetails, 
-    citiesData: PropertyDetails, 
-    countriesData: PropertyDetails, 
+    currentCountry: string | null,
+    currentCity: string | null,
+    propertyTypesData: {id: number, type_name: string, slug: string}[], 
+    citiesData: {id: number, city_name: string, slug: string}[], 
+    countriesData: {id: number, country_name: string, slug: string}[], 
+    districtsData: {id: number, district_name: string, slug: string}[], 
     PriceOptions: {id: number, value: string, label: string}[], 
     BEDROOMS_OPTIONS: {id: number, value: string, label: string}[], 
     BATHROOMS_OPTIONS: {id: number, value: string, label: string}[]}) {
@@ -368,19 +407,30 @@ export function MobileFilter ({
             )}
 
             {/* 
+            ========================
+            = Start District Filter = 
+            ========================
+            */}
+            {currentCity && districtsData?.length > 0 && (
+            <FilterSelect
+              label="Districts"
+              options={districtsData?.map((district: {id: number, district_name: string, slug: string}) => ({
+                id: district.id,
+                value: district.slug,
+                label: district.district_name,
+              })) || []}
+              value={searchParams.get("district") || ""}
+              onValueChange={(value) => handleFilterChange("district", value)}
+            />
+            )}
+
+            {/* 
             =========================
             = Start Bedrooms Filter = 
             =========================
             */}
             <FilterSelect
               label="Beds"
-              // options={[
-              //   { id: 1, value: "2", label: "1+ Bedroom" },
-              //   { id: 2, value: "3", label: "2+ Bedrooms" },
-              //   { id: 3, value: "4", label: "3+ Bedrooms" },
-              //   { id: 4, value: "5", label: "4+ Bedrooms" },
-              //   { id: 5, value: "6", label: "5+ Bedrooms" },
-              // ]}
               options={BEDROOMS_OPTIONS}
               value={searchParams.get("bedrooms") || ""}
               onValueChange={(value) => handleFilterChange("bedrooms", value)}
@@ -393,13 +443,6 @@ export function MobileFilter ({
             */}
             <FilterSelect
               label="Baths"
-              // options={[
-              //   { id: 1, value: "2", label: "1+ Bathroom" },
-              //   { id: 2, value: "3", label: "2+ Bathrooms" },
-              //   { id: 3, value: "4", label: "3+ Bathrooms" },
-              //   { id: 4, value: "5", label: "4+ Bathrooms" },
-              //   { id: 5, value: "6", label: "5+ Bathrooms" },
-              // ]}
               options={BATHROOMS_OPTIONS}
               value={searchParams.get("bathrooms") || ""}
               onValueChange={(value) => handleFilterChange("bathrooms", value)}

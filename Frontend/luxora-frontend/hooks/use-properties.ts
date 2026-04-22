@@ -3,35 +3,25 @@ import { useQuery } from "@tanstack/react-query";
 import qs from "qs"
 import { useSearchParams } from "next/navigation";
 import { PRICE_OPTIONS, BEDROOMS_OPTIONS, BATHROOMS_OPTIONS } from '@/constants'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePageChange } from "./use-page-change";
 
 
 export const useProperties = ({ filter = true, pageSizeAmount = 9 }: { filter?: boolean; pageSizeAmount?: number }) => {
-  const router = useRouter()       // ← add this
-  const pathname = usePathname()   // ← add this
   const searchParams = useSearchParams()
 
   const status = searchParams.get('status') as 'Sale' | 'Rent' | null
   const type = searchParams.get('type')
   const country = searchParams.get('country')
   const city = searchParams.get('city')
+  const district = searchParams.get('district')
   const bedroom = searchParams.get('bedrooms')
   const bathroom = searchParams.get('bathrooms')
   const price = searchParams.get('price')
 
-  // ── FIX: single source of truth — always read page from URL ───────────────
-  // Removed useState(1) entirely. currentPage is always what the URL says.
   const currentPage = Number(searchParams.get('page') ?? 1)
   const pageSize = pageSizeAmount
 
-  // handlePageChange now writes to the URL instead of local state
-  // This means filter changes and page changes both live in the URL together
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('page', String(newPage))
-    router.push(`${pathname}?${params.toString()}`, { scroll: false })
-    window.scrollTo({ top: 400, behavior: 'smooth' })
-  }
+  const { handlePageChange } = usePageChange(searchParams);
 
   /*
   ================
@@ -70,6 +60,28 @@ const finalPrice = (operator === '$between' && price)
   ? (price.includes(',') ? price.split(',').map(Number) : price.split('-').map(Number))
   : price;
 
+
+  // Query Filters
+  const filters: any = {
+    is_approved: { $eq: "approved" },
+    availability_status: { $in: ["Available", "Off-plan"] },
+  };
+
+  if (status) filters.property_status = { $eq: status };
+  if (type) filters.property_type = { slug: { $eq: type } };
+  if (bedroom) filters.bedroom = { [bedroomOperator]: finalBedroom };
+  if (bathroom) filters.bathroom = { [bathroomOperator]: finalBathroom };
+  if (price) filters.price = { [operator]: finalPrice };
+  // Build location filter
+  if (district) {
+    filters.district = { slug: { $eq: district } };
+  } else if (city) {
+    filters.district = { city: { slug: { $eq: city } } };
+  } else if (country) {
+    filters.district = { city: { country: { slug: { $eq: country } } } };
+  }
+
+  // Property Query
   const query = qs.stringify({
     populate: {
       featured_image: { populate: "*" },
@@ -78,36 +90,40 @@ const finalPrice = (operator === '$between' && price)
       agent: { populate: { properties: { populate: "*" }, avatar: {populate: "*"} } },
     },
     pagination: {
-      page: currentPage,   // ← now always a number, never a mix of string/number
+      page: currentPage,
       pageSize,
     },
-    filters: {
-      ...(filter && {
-        property_status: status ? { $eq: status } : undefined,
-        property_type: type ? { slug: { $eq: type } } : undefined,
-        bedroom: bedroom ? { [bedroomOperator]: finalBedroom } : undefined,
-        bathroom: bathroom ? { [bathroomOperator]: finalBathroom } : undefined,
-        price: price ? { [operator]: finalPrice } : undefined,
-        district: {
-          city: {
-            slug: city ? { $eq: city } : undefined,
-            country: { slug: country ? { $eq: country } : undefined },
-          },
-        },
-        // is_approved: { $eq: true },
-        is_approved: { $eq: "approved" },
-      }),
-    },
+    // filters: {
+    //   ...(filter && {
+    //     property_status: status ? { $eq: status } : undefined,
+    //     property_type: type ? { slug: { $eq: type } } : undefined,
+    //     bedroom: bedroom ? { [bedroomOperator]: finalBedroom } : undefined,
+    //     bathroom: bathroom ? { [bathroomOperator]: finalBathroom } : undefined,
+    //     price: price ? { [operator]: finalPrice } : undefined,
+    //     district: {
+    //       slug: district ? { $eq: district } : undefined,
+    //       city: {
+    //         slug: city ? { $eq: city } : undefined,
+    //         country: { slug: country ? { $eq: country } : undefined },
+    //       },
+    //     },
+    //     // is_approved: { $eq: true },
+    //     is_approved: { $eq: "approved" },
+    //     availability_status: { $in: ["Available", "Off-plan"] },
+    //   }),
+    // },
+    ...(filter && { filters }),
     sort: 'createdAt:desc',
   }, { encodeValuesOnly: true })
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['all-properties', currentPage, status, type, country, city, bedroom, bathroom, price],
+    queryKey: ['all-properties', currentPage, status, type, country, city, district, bedroom, bathroom, price],
     queryFn: async () => {
       const res = await axiosInstance.get(`/properties?${query}`)
       return res.data
     },
-    staleTime: 0,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
   })

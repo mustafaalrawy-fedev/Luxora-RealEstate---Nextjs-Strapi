@@ -9,6 +9,7 @@ import { NextAuthProvider } from "@/components/providers/nextAuthProvider";
 import { oxanium, dmSans, oxaniumHeading } from "@/lib/fonts";
 import { Toaster } from "sonner"
 import { InitialLoader } from "@/components/providers/InitialLoader";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 
 export const metadata: Metadata = {
@@ -31,9 +32,11 @@ export default function RootLayout({
         <NextAuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ReactQueryProvider>
+            <TooltipProvider>
             <InitialLoader>
             <main>{children}</main>
             </InitialLoader>
+            </TooltipProvider>
             <Toaster position="top-right" richColors duration={2500} closeButton/>
           </ReactQueryProvider>
         </ThemeProvider>

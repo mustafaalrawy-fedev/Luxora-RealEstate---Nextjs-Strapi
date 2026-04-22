@@ -1,6 +1,6 @@
 interface PropertyDetails {
     id: number;
-    document_id: string;
+    documentId: string;
     price: number;
     area_size_sqft: number;
     bedroom: number;
@@ -15,7 +15,9 @@ interface PropertyDetails {
     build_year: string;
     publishedAt?: string | null;
     is_approved?: "pending" | "approved" | "rejected";
-    is_approved_copy?: boolean;
+    // is_approved_copy?: boolean;
+    rejected_message?: string;
+    availability_status?: "Available" | "Rented" | "Sold" | "Off-plan" | undefined;
     featured_image: {
         url: string;
         name: string;

@@ -11,6 +11,7 @@ import PropertyFilter, { FloatingFilterBtn } from './PropertyFilter'
 import { AnimatePresence, motion } from 'motion/react'
 import { useProperties } from '@/hooks/use-properties'
 import { useSearchParams } from 'next/navigation'
+import { itemVariants } from '@/components/motion'
 
 const PropertiesContent = () => {
   const searchParams = useSearchParams()
@@ -31,7 +32,7 @@ const PropertiesContent = () => {
         </div>
         {/*   Start Property Filter */}
         <div className="lg:block hidden container-space h-fit absolute bottom-[-50px] left-0 right-0 z-20 w-[70%] mx-auto">
-            <PropertyFilter />
+          <PropertyFilter status={true} type={true} price={true} location={true} rooms={true}/>
         </div>
         {/*   End Property Filter */}
     </section>
@@ -47,9 +48,13 @@ const PropertiesContent = () => {
       <AnimatePresence mode='wait' initial={false}>
         {isLoading ? <PropertiesSkeleton count={pageSize} /> : error ? <ErrorState variant="All" /> : 
         <motion.div 
-          initial={{opacity: 0, y: 20}}
-          animate={{opacity: 1, y: 0}}
-          exit={{opacity: 0, y: -20}}
+          // initial={{opacity: 0, y: 20}}
+          // animate={{opacity: 1, y: 0}}
+          // exit={{opacity: 0, y: -20}}
+          variants={itemVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
           transition={{duration: 0.5}}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           key={searchParams.toString()}

@@ -58,7 +58,7 @@ const AddPropertyPage = () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<PropertyValues>({
+  } = useForm({
     resolver: zodResolver(propertySchema),
     defaultValues: {
       property_status: "Sale",
@@ -68,7 +68,7 @@ const AddPropertyPage = () => {
       developer: "",
       district: "", 
       is_approved: "pending",
-      // is_approved_copy: "pending",
+      availability_status: "Available",
     },
   });
 
@@ -130,7 +130,7 @@ const AddPropertyPage = () => {
   const { data: districts } = useQuery({
     queryKey: ["districts"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/districts?populate[city][populate]=country");
+      const res = await axiosInstance.get("/districts?populate[city][populate]=country&sort=district_name:asc");
       return res.data.data;
     },
   });
@@ -223,7 +223,7 @@ const AddPropertyPage = () => {
 
             publishedAt: null,
             is_approved: data.is_approved,
-            // is_approved_copy: data.is_approved_copy,
+            availability_status: data.availability_status,
           },
         }),
       });
@@ -370,6 +370,23 @@ const AddPropertyPage = () => {
             <label className="text-sm font-semibold">Area (sqft)</label>
             <Input type="number" min={0} {...register("area_size_sqft")} className="h-12" placeholder="0" />
             {errors.area_size_sqft && <p className="text-xs text-destructive">{errors.area_size_sqft.message}</p>}
+          </div>
+        </div>
+
+        {/* ── Availability Status ─────────────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold">Availability Status</label>
+            <Select value={watch("availability_status")} onValueChange={(v) => setValue("availability_status", v as "Available" | "Sold" | "Rented" | "Off-plan")}>
+              <SelectTrigger className="h-12 w-full" size="lg" ><SelectValue placeholder="Select Status" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Available">Available</SelectItem>
+                <SelectItem value="Sold">Sold</SelectItem>
+                <SelectItem value="Rented">Rented</SelectItem>
+                <SelectItem value="Off-plan">Off-plan</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.availability_status && <p className="text-destructive text-xs">{errors.availability_status.message}</p>}
           </div>
         </div>
 
