@@ -55,6 +55,10 @@ interface PropertyDetails {
         id: number;
         district_name: string;
         slug: string;
+        coordinates: {
+            lat: number;
+            lng: number;
+        }
         city: {
             id: number;
             city_name: string;

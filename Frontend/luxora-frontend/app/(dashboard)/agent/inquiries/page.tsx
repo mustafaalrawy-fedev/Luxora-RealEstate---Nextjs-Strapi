@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
-  Mail, Phone, MessageSquare, MoreVertical, Search, Filter,
-  CheckCircle2, Clock, ChevronDown, ChevronUp, ExternalLink
+  Mail, Phone, MessageSquare, Search, Filter,
+  CheckCircle2, ChevronDown, ChevronUp, ExternalLink
 } from "lucide-react";
 // UI Components
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -12,19 +12,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useAgentInquiries } from "@/hooks/use-agent-inquires";
+import { useAgentInquiries, useUpdateAgentInquiryStatus } from "@/hooks/use-agent-inquires";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import InquiryStatusToggle from "@/components/dashboard/stats/InquiryStatusToggle";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const InquiriesPage = () => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const { inquiries, isLoading, setSearchTerm, searchTerm, refetch } = useAgentInquiries();
+
+  // get Inquiries data from use-agent-inquires hook
+  const { inquiries, isLoading, setSearchTerm, searchTerm, setStatusFilter, statusFilter } = useAgentInquiries();
+
+  // update Inquiry Status from use-update-agent-inquiry-status hook
+  const { updateStatus, isPending } = useUpdateAgentInquiryStatus();
 
   const getStatusBadge = (status: string) => {
     const styles = {
-      new: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-      contacted: "bg-amber-500/10 text-amber-500 border-amber-500/20",
-      closed: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+      new: "bg-info/20 text-info border-info/20",
+      contacted: "bg-success/20 text-success border-success/20",
+      closed: "bg-error/20 text-error border-error/20",
     };
     const current = status?.toLowerCase() || "pending";
     return (
@@ -39,9 +46,9 @@ const InquiriesPage = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-2">
         <div className="space-y-1">
-          <h1 className="text-4xl font-extrabold tracking-tight gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+          <h5>
             Leads & Inquiries
-          </h1>
+          </h5>
           <p className="text-muted-foreground font-medium">Tracking and managing property engagement.</p>
         </div>
       </div>
@@ -57,9 +64,29 @@ const InquiriesPage = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Button variant="outline" className="w-full md:w-auto rounded-xl border-dashed">
-          <Filter className="mr-2 h-4 w-4" /> Filter By Status
+       <DropdownMenu>
+      <DropdownMenuTrigger asChild >
+        <Button variant="outline" className="w-full md:w-auto rounded-xl border-dashed gap-2">
+          <Filter className="h-4 w-4" />
+          Status: <span className={cn("font-bold", 
+            statusFilter === "All" ? "text-muted-foreground" : 
+            statusFilter === "New" ? "text-info" : 
+            statusFilter === "Contacted" ? "text-success" : 
+            "text-error")}>{statusFilter}</span>
         </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="rounded-xl w-40" >
+        {["All", "New", "Contacted", "Closed"].map((status) => (
+          <DropdownMenuItem 
+            key={status} 
+            onClick={() => setStatusFilter(status)}
+            className={`cursor-pointer ${statusFilter === status ? "bg-primary text-primary-foreground" : ""}`}
+          >
+            {status}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
       </div>
 
       {/* Table Container */}
@@ -90,7 +117,7 @@ const InquiriesPage = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              inquiries.map((inq: {id: number, full_name: string, email: string, phone: string, inquiry_status: string, property: {property_name: string, slug: string, documentId: string}, createdAt: string, message: string}) => (
+              inquiries.map((inq: {id: number, documentId: string, full_name: string, email: string, phone: string, inquiry_status: string, property: {property_name: string, slug: string, documentId: string}, createdAt: string, message: string}) => (
                 <React.Fragment key={inq.id}>
                   <TableRow 
                     className={cn(
@@ -152,10 +179,12 @@ const InquiriesPage = () => {
                                 </p>
                                 <div className="flex gap-4 pt-2">
                                   <Button size="sm" className="rounded-full shadow-lg shadow-primary/20 gap-2">
+                                  <Link href={`mailto:${inq.email}`} target="_blank" className="flex items-center gap-2">
                                     <Mail size={14} /> Reply via Email
+                                  </Link>
                                   </Button>
                                   <Button size="sm" variant="outline" className="rounded-full">
-                                    <Link href={`https://wa.me/${inq.phone}`} className="flex items-center gap-2">
+                                    <Link href={`https://wa.me/${inq.phone}`} target="_blank" className="flex items-center gap-2">
                                       <Phone size={14} />
                                       <p className="text-sm"> Contact via WhatsApp</p>
                                     </Link>
@@ -166,7 +195,7 @@ const InquiriesPage = () => {
                                     <Tooltip>
                                       <TooltipTrigger asChild>
                                         <Button size="sm" variant="outline" className="rounded-full">
-                                          <Link href={`tel:${inq.phone}`} className="flex items-center gap-2">
+                                          <Link href={`tel:${inq.phone}`} target="_blank" className="flex items-center gap-2">
                                             <Phone size={14} />
                                             <p className="text-sm"> Contact via Phone</p>
                                           </Link>
@@ -180,12 +209,26 @@ const InquiriesPage = () => {
                                   </TooltipProvider>
                                 </div>
                               </div>
+
+                              {/* Update Inquiry Status */}
                               <div className="bg-background/50 rounded-2xl p-4 border border-border/50 space-y-3">
-                                <p className="text-xs font-bold uppercase opacity-50">Quick Actions</p>
+                                <p className="text-xs font-bold uppercase opacity-50">Update Inquiry Status</p>
                                 <div className="flex flex-col gap-2">
+                                  {/* New - Contacted - Closed */}
                                   <Button variant="ghost" size="sm" className="justify-start gap-2 h-9 px-3 rounded-lg hover:bg-primary/10">
-                                    <CheckCircle2 size={14} className="text-success" /> Mark as Resolved
+                                    {inq.inquiry_status === "New" && <CheckCircle2 size={14} className="text-info" />}
+                                    {inq.inquiry_status === "Contacted" && <CheckCircle2 size={14} className="text-success" />}
+                                    {inq.inquiry_status === "Closed" && <CheckCircle2 size={14} className="text-error" />}
+
+                                    {inq.inquiry_status === "New" && "Marked as New"}
+                                    {inq.inquiry_status === "Contacted" && "Marked as Contacted"}
+                                    {inq.inquiry_status === "Closed" && "Marked as Closed"}
                                   </Button>
+                                  <InquiryStatusToggle  
+                                  onUpdate={(documentId, status) => updateStatus({ documentId: inq.documentId, newStatus: status })}  
+                                  inquiry={{ documentId: inq.documentId, inquiry_status: inq.inquiry_status }}
+                                  isUpdating={isPending}
+                                  />
                                   {inq.property && (
                                     <Button variant="ghost" size="sm" className="justify-start h-9 px-3 rounded-lg hover:bg-primary/10 font-bold text-primary">
                                       <Link href={`/properties/${inq.property?.slug}`} className="flex items-center gap-2">

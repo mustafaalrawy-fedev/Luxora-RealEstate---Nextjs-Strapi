@@ -33,7 +33,7 @@ export default function PropertyCard(property: PropertyDetails) {
                         fill 
                         className='object-cover transition-transform duration-700 group-hover:scale-110'
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent z-10"></div>
                     
                     {/* Status Badge */}
                     <Badge 
@@ -59,7 +59,8 @@ export default function PropertyCard(property: PropertyDetails) {
                 <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
                         <div className="space-y-1">
-                            <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold", property_status === 'Rent' && "text-secondary")}>
+                            <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold text-primary", property_status === 'Rent' && "text-secondary")}>
+                            {/* <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-foreground">*/}
                                 {property_type.type_name}
                             </span>
                             <h3 className={cn("font-bold text-xl line-clamp-1 group-hover:text-primary transition-colors", property_status === 'Rent' && "group-hover:text-secondary")}>

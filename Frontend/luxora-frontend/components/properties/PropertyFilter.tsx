@@ -11,6 +11,7 @@ import { Filter } from 'lucide-react'
 import { useFilterStore } from '@/store/useFilterStore'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '../ui/sheet'
 import { ScrollArea } from '../ui/scroll-area'
+import { useMapStore } from '@/store/useMapStore'
 
 const PropertyFilter = ({status = false, type = false, price = false, location = false, rooms = false }: {status?: boolean, type?: boolean, price?: boolean, location?: boolean, rooms?: boolean, bathrooms?: boolean}) => {
   const router = useRouter()
@@ -20,6 +21,8 @@ const PropertyFilter = ({status = false, type = false, price = false, location =
   const currentStatus = searchParams.get('status') as 'Sale' | 'Rent' | null; // Sale | Rent
   // 1. Fallback logic: If no status, show Sale options or a "Select Status First" message
   const PriceOptions = currentStatus === 'Rent' ? PRICE_OPTIONS.RENT : PRICE_OPTIONS.SALE;
+
+  const { setClearCoords } = useMapStore();
 
   // Handle filter change
 function handleFilterChange(name: string, value: string) {
@@ -40,6 +43,7 @@ function handleFilterChange(name: string, value: string) {
   // Handle clear filters
   function handleClearFilters() {
     router.push(pathname, { scroll: false })
+    setClearCoords()
   }
 
   // Fetch property types
@@ -82,9 +86,10 @@ function handleFilterChange(name: string, value: string) {
   const { data: districtsData } = useQuery({
       queryKey: ['districts', currentCity],
       queryFn: async() => {
-          const res = await axiosInstance.get(`/districts?filters[city][slug][$eq]=${currentCity}`) // districts by city
+          const res = await axiosInstance.get(`/districts?filters[city][slug][$eq]=${currentCity}&populate=*`) // districts by city
           return res.data.data
       },
+      enabled: !!currentCity,
       staleTime: 5 * 60 * 1000,
       gcTime: 10 * 60 * 1000,
   })
@@ -162,6 +167,10 @@ export function DesktopFilter ({
     BATHROOMS_OPTIONS: {id: number, value: string, label: string}[], 
     propertyFilterControl: {status: boolean, type: boolean, location: boolean, rooms: boolean, price: boolean}
   }) {
+
+  const { setCoords } = useMapStore();
+  
+
   return (
     <aside className="w-full bg-card rounded-md p-8 shadow-xl border">
       {/* <div className="flex justify-between items-center flex-row gap-5"> */}
@@ -255,7 +264,17 @@ export function DesktopFilter ({
             label: district.district_name,
           })) || []}
           value={searchParams.get("district") || ""}
-          onValueChange={(value) => handleFilterChange("district", value)}
+          onValueChange={(value) => { 
+            handleFilterChange("district", value); 
+            const district = districtsData.find((d: any) => d.slug === value); 
+            if (district?.coordinates?.lat && district?.coordinates?.lng) { 
+              setCoords(
+                Number(district.coordinates.lat), 
+                Number(district.coordinates.lng), 
+                district.district_name
+              );
+            }
+          }}
         />
         )}
 
